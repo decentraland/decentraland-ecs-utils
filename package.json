@@ -1,0 +1,25 @@
+{
+  "name": "decentraland-ecs-utils",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/decentraland/decentraland-ecs-utils.git"
+  },
+  "keywords": [],
+  "author": "Decentraland",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/decentraland/decentraland-ecs-utils/issues"
+  },
+  "homepage": "https://github.com/decentraland/decentraland-ecs-utils#readme",
+  "devDependencies": {
+    "decentraland-ecs": "^6.1.4",
+    "typescript": "^3.5.2"
+  }
+}
