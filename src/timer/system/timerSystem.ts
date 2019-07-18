@@ -1,5 +1,7 @@
-import Components from "../component/index"
 import { ITimerComponent } from "../component/itimercomponent";
+import { Interval } from "../component/interval";
+import { Delay } from "../component/delay";
+import { ExpireIn } from "../component/expire";
 
 export default class TimerSystem implements ISystem {
     
@@ -21,9 +23,9 @@ export default class TimerSystem implements ISystem {
     
     private constructor(){
         TimerSystem._instance = this
-        this._components.push(Components.Interval)
-        this._components.push(Components.Delay)
-        this._components.push(Components.ExpireIn)
+        this._components.push(Interval)
+        this._components.push(Delay)
+        this._components.push(ExpireIn)
     }
 
     update(dt: number){

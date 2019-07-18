@@ -1,5 +1,9 @@
-import Components from "../component/index"
 import { ITransformComponent } from "../component/itransformcomponent";
+import { MoveTransformComponent } from "../component/move";
+import { RotateTransformComponent } from "../component/rotate";
+import { ScaleTransformComponent } from "../component/scale";
+import { FollowPathComponent } from "../component/followpath";
+import { KeepRotatingComponent } from "../component/keeprotating";
 
 export default class TransformSystem implements ISystem {
     private static _instance: TransformSystem | null = null
@@ -20,11 +24,11 @@ export default class TransformSystem implements ISystem {
 
     private constructor(){
         TransformSystem._instance = this
-        this._components.push(Components.MoveTransformComponent)
-        this._components.push(Components.RotateTransformComponent)
-        this._components.push(Components.ScaleTransformComponent)
-        this._components.push(Components.FollowPathComponent)
-        this._components.push(Components.KeepRotatingComponent)
+        this._components.push(MoveTransformComponent)
+        this._components.push(RotateTransformComponent)
+        this._components.push(ScaleTransformComponent)
+        this._components.push(FollowPathComponent)
+        this._components.push(KeepRotatingComponent)
     }
 
     update(dt: number){
@@ -36,7 +40,7 @@ export default class TransformSystem implements ISystem {
     private updateComponent<T extends ITransformComponent>(dt: number, component: ComponentConstructor<T>){
         const group = engine.getComponentGroup(component, Transform)
 
-        for (let entity of group.entities){
+        group.entities.forEach(entity => {
             const transform = entity.getComponent(Transform)
             const comp = entity.getComponent(component)
 
@@ -46,6 +50,6 @@ export default class TransformSystem implements ISystem {
                 entity.removeComponent(comp)
                 if (comp.onFinishCallback != null) comp.onFinishCallback()
             }
-        }
+        });
     }
 }
