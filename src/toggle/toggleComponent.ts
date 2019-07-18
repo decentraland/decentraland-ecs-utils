@@ -55,3 +55,7 @@ export class ToggleComponent{
         this.onValueChangedCallback = onValueChangedCallback
     }
 }
+
+export default{
+    ToggleComponent
+};

@@ -1,7 +1,7 @@
-/// <reference path="./component/itimercomponent.ts" />
-/// <reference path="./component/expire.ts" />
-/// <reference path="./component/interval.ts" />
-/// <reference path="./component/delay.ts" />
-/// <reference path="./system/timerSystem.ts" />
+import Components from "./component/index";
+import System from "./system/timerSystem";
 
-export default Timer
+export default {
+    System,
+    Components
+};
