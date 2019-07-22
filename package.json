@@ -2,10 +2,11 @@
   "name": "decentraland-ecs-utils",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.js",
+  "main": "index.ts",
   "scripts": {
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "make": "cp -r ./src ./dist && cp package.json ./dist/package.json",
+    "makeclean": "rm -rf dist && npm run make"
   },
   "repository": {
     "type": "git",

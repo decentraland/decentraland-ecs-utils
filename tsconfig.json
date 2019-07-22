@@ -3,8 +3,8 @@
     "target": "es5",
     "module": "commonjs",
     "strict": true,
-    "declarationDir": "dist",
-    "outDir": "dist",
+    "declarationDir": "lib",
+    "outDir": "lib",
     "strictNullChecks": true,
     "inlineSourceMap": true,
     "inlineSources": true,
@@ -28,6 +28,6 @@
     ]
   },
   "include": ["./src"],
-  "exclude": ["../../node_modules", "../../src", "../../test", "../test", "dist", "etc", "temp"],
+  "exclude": ["../../node_modules", "../../src", "../../test", "../test", "dist", "lib", "etc", "temp"],
   "extends": "./node_modules/decentraland-ecs/types/tsconfig.json"
 }
