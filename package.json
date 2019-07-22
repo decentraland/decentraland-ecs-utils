@@ -1,7 +1,7 @@
 {
   "name": "decentraland-ecs-utils",
   "version": "1.0.0",
-  "description": "",
+  "description": "A collection of helpers to make it easier to build a Decentraland scene using the SDK.",
   "main": "index.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
