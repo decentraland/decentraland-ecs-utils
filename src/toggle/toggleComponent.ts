@@ -55,5 +55,6 @@ export class ToggleComponent{
 }
 
 export default{
-    ToggleComponent
+    ToggleComponent,
+    ToggleState
 };

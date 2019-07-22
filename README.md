@@ -17,6 +17,8 @@ To move an entity over a period of time, from one position to another, use the `
 This example moves an entity from one position to another over 2 seconds:
 
 ```ts
+import utils from "../node_modules/decentraland-ecs-utils/index"
+
 // Create entity
 const box = new Entity()
 
@@ -29,7 +31,7 @@ let StartPos = new Vector3(1, 1, 1)
 let EndPos = new Vector3(15, 1, 15)
 
 // Move entity
-box.addComponent(new MoveTransformComponent(StartPos, EndPos, 2))
+box.addComponent(new utils.TransformUtils.Components.MoveTransformComponent(StartPos, EndPos, 2))
 
 // Add entity to engine
 engine.addEntity(box)
@@ -50,6 +52,8 @@ To move an entity over several points of a path over a period of time, use the `
 This example moves an entity over through four points:
 
 ```ts
+import utils from "../node_modules/decentraland-ecs-utils/index"
+
 // Create entity
 const box = new Entity()
 
@@ -65,7 +69,7 @@ path[2] = new Vector3(15, 1, 15)
 path[3] = new Vector3(15, 1, 1)
 
 // Move entity
-box.addComponent(new FollowPathComponent(path, 2))
+box.addComponent(new utils.TransformUtils.Components.FollowPathComponent(path, 2))
 
 // Add entity to engine
 engine.addEntity(box)
@@ -85,6 +89,8 @@ To rotate an entity over a period of time, from one direction to another, use th
 This example rotates an entity from one rotation to another over 2 seconds:
 
 ```ts
+import utils from "../node_modules/decentraland-ecs-utils/index"
+
 // Create entity
 const box = new Entity()
 
@@ -97,7 +103,7 @@ let StartRot = Quaternion.Euler(90, 0, 0)
 let EndRot =  Quaternion.Euler(270, 0, 0)
 
 // Rotate entity
-box.addComponent(new rotateTransformComponent(StartRos, EndRos, 2))
+box.addComponent(new utils.TransformUtils.Components.RotateTransformComponent(StartRot, EndRot, 2))
 
 // Add entity to engine
 engine.addEntity(box)
@@ -125,6 +131,8 @@ To adjust the scale of an entity over a period of time, from one size to another
 This example scales an entity from one size to another over 2 seconds:
 
 ```ts
+import utils from "../node_modules/decentraland-ecs-utils/index"
+
 // Create entity
 const box = new Entity()
 
@@ -137,7 +145,7 @@ let StartSize = new Vector3(1, 1, 1)
 let EndSize = new Vector3(0.75, 2, 0.75)
 
 // Move entity
-box.addComponent(new ScaleTransformComponent(StartSize, EndSize, 2))
+box.addComponent(new utils.TransformUtils.Components.ScaleTransformComponent(StartSize, EndSize, 2))
 
 // Add entity to engine
 engine.addEntity(box)
@@ -158,7 +166,7 @@ The following values are accepted:
 The following example moves a box following an ease-in rate:
 
 ```ts
-box.addComponent(new MoveTransformComponent(StartPos, EndPos, 2, , Interpolation.EASEINQUAD))
+box.addComponent(new utils.TransformUtils.Components.MoveTransformComponent(StartPos, EndPos, 2, null, utils.TransformUtils.Math.Interpolation.InterpolationType.EASEINQUAD))
 ```
 
 
@@ -173,7 +181,7 @@ All of the translation components, the `MoveTransformComponent`, `rotateTransfor
 The following example logs a message when the box finishes its movement. The example uses `MoveTransformComponent`, but the same applies to `rotateTransformComponent` and `ScaleTransformComponent`.
 
 ```ts
-box.addComponent(new MoveTransformComponent(StartPos, EndPos, 2, () => {
+box.addComponent(new utils.TransformUtils.Components.MoveTransformComponent(StartPos, EndPos, 2, () => {
 	log("finished moving box")
 }))
 ```
@@ -188,7 +196,7 @@ The `FollowPathComponent` has a two optional arguments that execute functions wh
 The following example logs a messages when the box finishes each segment of the path, and another when the entire path is done.
 
 ```ts
-box.addComponent(new FollowPathComponent(path, 2,  
+box.addComponent(new utils.TransformUtils.Components.FollowPathComponent(path, 2,  
 	() => {
 		log("finished moving box")
 	},
@@ -218,6 +226,8 @@ It exposes three methods:
 The following example switches the color of a box between two colors each time it's clicked.
 
 ```ts
+import utils from "../node_modules/decentraland-ecs-utils/index"
+
 // Create entity
 const box = new Entity()
 
@@ -227,13 +237,13 @@ box.addComponent(new Transform())
 
 //Define two different materials
 let greenMaterial = new Material()
-greenMaterial.albedoColor = Color4.Green()
+greenMaterial.albedoColor = Color3.Green()
 let redMaterial = new Material()
-redMaterial.albedoColor = Color4.Red()
+redMaterial.albedoColor = Color3.Red()
 
 // Add a Toggle component
-box.addComponent(new ToggleComponent(ToggleComponent.State.Off, value =>{
-	if (value == ToggleComponent.State.On){
+box.addComponent(new utils.Toggle.ToggleComponent(utils.Toggle.ToggleState.Off, value =>{
+	if (value == utils.Toggle.ToggleState.On){
 		//set color to green
 		box.addComponentOrReplace(greenMaterial)
 	}
@@ -246,7 +256,7 @@ box.addComponent(new ToggleComponent(ToggleComponent.State.Off, value =>{
 
 //listen for click on the box and toggle it's state
 box.addComponent(new OnClick(event=>{
-	box.getComponent(ToggleComponent).toggle()
+	box.getComponent(utils.Toggle.ToggleComponent).toggle()
 }))
 
 // Add entity to engine
@@ -270,18 +280,18 @@ let Pos1 = new Vector3(1, 1, 1)
 let Pos2 = new Vector3(1, 1, 2)
 
 //toggle for wine bottle
-box.addComponent(new ToggleComponent(ToggleComponent.State.Off, value =>{
-	if (value == ToggleComponent.State.On){
-		box.addComponentOrReplace(new MoveTransformComponent(Pos1,Pos2, 0.5))
+box.addComponent(new utils.Toggle.ToggleComponent(utils.Toggle.ToggleState.Off, value =>{
+	if (value == utils.Toggle.ToggleState.On){
+		box.addComponentOrReplace(new utils.TransformUtils.Components.MoveTransformComponent(Pos1,Pos2, 0.5))
 	}
 	else{
-		box.addComponentOrReplace(new MoveTransformComponent(Pos2,Pos1, 0.5))
+		box.addComponentOrReplace(new utils.TransformUtils.Components.MoveTransformComponent(Pos2,Pos1, 0.5))
 	}
 }))
 
 //listen for click on the box and toggle it's state
 box.addComponent(new OnClick(event=>{
-	box.getComponent(ToggleComponent).toggle()
+	box.getComponent(utils.Toggle.ToggleComponent).toggle()
 }))
 
 // Add entity to engine
@@ -308,12 +318,12 @@ easterEggShape.visible = false
 easterEgg.addComponent(easterEggShape)
 
 // add a delayed function
-easterEgg.addComponent(new Delay(100000, () => {
-	easterEgg.getComponent(PlaneShape).visible = true
+easterEgg.addComponent(new utils.TimerUtils.Components.Delay(100000, () => {
+	easterEgg.getComponent(BoxShape).visible = true
 }))
 
 // add entity to scene
-Engine.addEntity(easterEgg)
+engine.addEntity(easterEgg)
 ```
 
 To delay the execution of a task that isn't directly tied to any entity in the scene, create a dummy entity that only holds a `Delay` component.
@@ -333,11 +343,11 @@ box.addComponent(new BoxShape())
 
 // add a function to run when clicked
 box.addComponent(new OnClick(() => {
-	box.addComponent(new ExpireIn(500))
+	box.addComponent(new utils.TimerUtils.Components.ExpireIn(500))
 }))
 
 // add entity to scene
-Engine.addEntity(box)
+engine.addEntity(box)
 ```
 
 ### Repeat at an Interval
@@ -355,13 +365,13 @@ box.addComponent(new BoxShape())
 box.addComponent(new Transform())
 
 // add a repeated function
-box.addComponent(new Interval(500, () => {
+box.addComponent(new utils.TimerUtils.Components.Interval(500, () => {
 	let randomSize = Math.random()
 	box.getComponent(Transform).scale.setAll(randomSize)
 }))
 
 // add entity to scene
-Engine.addEntity(box)
+engine.addEntity(box)
 ```
 
 To repeat the execution of a task that isn't directly tied to any entity in the scene, create a dummy entity that only holds an `Interval` component.
