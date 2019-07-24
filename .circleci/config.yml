@@ -1,0 +1,33 @@
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  release:
+    docker:
+      - image: circleci/node:10
+
+    working_directory: /tmp/decentraland-ecs-utils
+
+    steps:
+      - checkout
+      - run:
+          name: Build library
+          command: npm run make
+      - run:
+          name: Move to dist directory
+          command: cd dist
+      - run:
+          name: Install dependencies
+          command: npm i
+      - run:
+          name: Semantic release
+          command: npm run semantic-release
+
+workflows:
+  version: 2
+  build-deploy-release:
+    jobs:
+      - release:
+          filters:
+            branches:
+              only: master
