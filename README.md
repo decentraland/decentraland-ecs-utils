@@ -2,7 +2,20 @@
 
 This library includes a number of helpful pre-built tools that include components, methods, and systems. They offer simple solutions to common scenarios that you're likely to run into.
 
-## Move or rotate an entity gradually
+- [Gradual Movement](#gradual-movement)
+	- [Move an entity](#move-an-entity)
+	- [Follow a path](#follow-a-path)
+	- [Rotate an entity](#rotate-an-entity)
+	- [Change scale](#change-scale)
+	- [Non-linear changes](#non-linear-changes)
+	- [Callback on finish](#callback-on-finish)
+- [Toggle](#toggle)
+- [Time](#time)
+	- [Delay a function](#delay-a-function)
+	- [Delay removing an entity](#delay-removing-an-entity)
+	- [Repeat at an Interval](#repeat-at-an-interval)
+
+## Gradual Movement
 
 ### Move an entity
 
@@ -152,7 +165,7 @@ engine.addEntity(box)
 ```
 
 
-### Non-linear movement or rotation
+### Non-linear changes
 
 All of the translation components, the `MoveTransformComponent`, `rotateTransformComponent`, `ScaleTransformComponent`, and `FollowPathComponent` have an optional argument to set the rate of change. By default, the movement, rotation, or scaling occurs at a linear rate, but this can be set to other options.
 
