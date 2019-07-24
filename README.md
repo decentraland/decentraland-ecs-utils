@@ -268,6 +268,8 @@ engine.addEntity(box)
 This example combines a toggle component with a move component to switch an entity between two positions every time it's clicked.
 
 ```ts
+import utils from "../node_modules/decentraland-ecs-utils/index"
+
 // Create entity
 const box = new Entity()
 
@@ -309,6 +311,8 @@ Add a `Delay` component to an entity to execute a function only after an `n` amo
 This example creates an entity that only becomes visible in the scene after 100000 milliseconds (100 seconds) have passed.
 
 ```ts
+import utils from "../node_modules/decentraland-ecs-utils/index"
+
 // create entity
 const easterEgg = new Entity()
 
@@ -335,6 +339,8 @@ Add an `ExpireIn` component to an entity to remove it from the scene after an `n
 This example creates an entity that is removed from the scene 500 milliseconds after it's clicked.
 
 ```ts
+import utils from "../node_modules/decentraland-ecs-utils/index"
+
 // create entity
 const box = new Entity()
 
@@ -357,6 +363,8 @@ Add an `Interval` component to an entity to make it execute a same function ever
 This example creates an entity that changes its scale to a random size every 500 milliseconds.
 
 ```ts
+import utils from "../node_modules/decentraland-ecs-utils/index"
+
 // create entity
 const box = new Entity()
 
