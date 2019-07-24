@@ -2,7 +2,20 @@
 
 This library includes a number of helpful pre-built tools that include components, methods, and systems. They offer simple solutions to common scenarios that you're likely to run into.
 
-## Move or rotate an entity gradually
+- [Gradual Movement](#gradual-movement)
+	- [Move an entity](#move-an-entity)
+	- [Follow a path](#follow-a-path)
+	- [Rotate an entity](#rotate-an-entity)
+	- [Change scale](#change-scale)
+	- [Non-linear changes](#non-linear-changes)
+	- [Callback on finish](#callback-on-finish)
+- [Toggle](#toggle)
+- [Time](#time)
+	- [Delay a function](#delay-a-function)
+	- [Delay removing an entity](#delay-removing-an-entity)
+	- [Repeat at an Interval](#repeat-at-an-interval)
+
+## Gradual Movement
 
 ### Move an entity
 
@@ -152,7 +165,7 @@ engine.addEntity(box)
 ```
 
 
-### Non-linear movement or rotation
+### Non-linear changes
 
 All of the translation components, the `MoveTransformComponent`, `rotateTransformComponent`, `ScaleTransformComponent`, and `FollowPathComponent` have an optional argument to set the rate of change. By default, the movement, rotation, or scaling occurs at a linear rate, but this can be set to other options.
 
@@ -268,6 +281,8 @@ engine.addEntity(box)
 This example combines a toggle component with a move component to switch an entity between two positions every time it's clicked.
 
 ```ts
+import utils from "../node_modules/decentraland-ecs-utils/index"
+
 // Create entity
 const box = new Entity()
 
@@ -309,6 +324,8 @@ Add a `Delay` component to an entity to execute a function only after an `n` amo
 This example creates an entity that only becomes visible in the scene after 100000 milliseconds (100 seconds) have passed.
 
 ```ts
+import utils from "../node_modules/decentraland-ecs-utils/index"
+
 // create entity
 const easterEgg = new Entity()
 
@@ -335,6 +352,8 @@ Add an `ExpireIn` component to an entity to remove it from the scene after an `n
 This example creates an entity that is removed from the scene 500 milliseconds after it's clicked.
 
 ```ts
+import utils from "../node_modules/decentraland-ecs-utils/index"
+
 // create entity
 const box = new Entity()
 
@@ -357,6 +376,8 @@ Add an `Interval` component to an entity to make it execute a same function ever
 This example creates an entity that changes its scale to a random size every 500 milliseconds.
 
 ```ts
+import utils from "../node_modules/decentraland-ecs-utils/index"
+
 // create entity
 const box = new Entity()
 
