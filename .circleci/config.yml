@@ -14,18 +14,15 @@ jobs:
           name: Build library
           command: npm run make
       - run:
-          name: Move to dist directory
-          command: cd dist
-      - run:
           name: Install dependencies
-          command: npm i
+          command: cd dist && npm i
       - run:
           name: Semantic release
-          command: npm run semantic-release
+          command: cd dist && npm run semantic-release
 
 workflows:
   version: 2
-  build-deploy-release:
+  release:
     jobs:
       - release:
           filters:
