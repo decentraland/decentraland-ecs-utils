@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "make": "cp -r src dist && cp package.json dist/package.json && cp LICENSE dist/LICENSE && cp README.md dist/README.md",
-    "makeclean": "rm -rf dist && npm run make"
+    "makeclean": "rm -rf dist && npm run make",
+    "semantic-release": "semantic-release"
   },
   "repository": {
     "type": "git",
