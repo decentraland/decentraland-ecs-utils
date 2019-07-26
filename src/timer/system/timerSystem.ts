@@ -4,7 +4,7 @@ import { Delay } from "../component/delay";
 import { ExpireIn } from "../component/expire";
 
 export default class TimerSystem implements ISystem {
-    
+    // default
     private static _instance: TimerSystem | null = null
 
     private _components: ComponentConstructor<ITimerComponent>[] = []
