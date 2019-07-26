@@ -1,5 +1,3 @@
-import TimerUtils from './timer/index'
-
 import { MoveTransformComponent } from './transform/component/move'
 import { RotateTransformComponent } from './transform/component/rotate'
 import { ScaleTransformComponent } from './transform/component/scale'
@@ -10,8 +8,11 @@ import { Interpolate, InterpolationType } from './transform/math/interpolation'
 
 import { ToggleComponent, ToggleState } from './toggle/toggleComponent'
 
+import { Delay } from "./timer/component/delay";
+import { ExpireIn } from "./timer/component/expire";
+import { Interval } from "./timer/component/interval";
+
 export default {
-  TimerUtils,
   TransformSystem,
   MoveTransformComponent,
   RotateTransformComponent,
@@ -21,5 +22,8 @@ export default {
   Interpolate,
   InterpolationType,
   ToggleComponent,
-  ToggleState
+  ToggleState,
+  Delay,
+  ExpireIn,
+  Interval
 }

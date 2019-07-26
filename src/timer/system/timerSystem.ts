@@ -3,8 +3,7 @@ import { Interval } from "../component/interval";
 import { Delay } from "../component/delay";
 import { ExpireIn } from "../component/expire";
 
-export default class TimerSystem implements ISystem {
-    // default
+export  class TimerSystem implements ISystem {
     private static _instance: TimerSystem | null = null
 
     private _components: ComponentConstructor<ITimerComponent>[] = []

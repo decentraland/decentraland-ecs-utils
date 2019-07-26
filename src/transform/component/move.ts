@@ -1,5 +1,5 @@
 import { ITransformComponent } from "./itransformcomponent";
-import TransformSystem from "../system/transfromSystem";
+import { TransformSystem } from "../system/transfromSystem";
 import { InterpolationType, Interpolate } from "../math/interpolation";
 
 /**

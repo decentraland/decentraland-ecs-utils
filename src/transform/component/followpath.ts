@@ -1,5 +1,5 @@
 import { ITransformComponent } from "./itransformcomponent";
-import TransformSystem from "../system/transfromSystem";
+import { TransformSystem } from "../system/transfromSystem";
 
 /**
  * Component to move a entity down a fixed path in an amount of time
