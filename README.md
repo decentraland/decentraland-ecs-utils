@@ -15,6 +15,25 @@ This library includes a number of helpful pre-built tools that include component
 	- [Delay removing an entity](#delay-removing-an-entity)
 	- [Repeat at an Interval](#repeat-at-an-interval)
 
+## Using the Utils library
+
+To use any of the helpers provided by the utils library
+
+1. Install it as an `npm` package. Run this command in your scene's project folder:
+
+```
+npm install decentraland-ecs-utils
+```
+
+2. Import the library into the scene's script. Add this line at the start of your `game.ts` file, or any other TypeScript files that require it:
+
+```ts
+import utils from "../node_modules/decentraland-ecs-utils/index"
+```
+
+3. In your TypeScript file, write `utils.` and let the suggestions of your IDE show the available helpers.
+
+
 ## Gradual Movement
 
 ### Move an entity
@@ -44,7 +63,7 @@ let StartPos = new Vector3(1, 1, 1)
 let EndPos = new Vector3(15, 1, 15)
 
 // Move entity
-box.addComponent(new utils.TransformUtils.Components.MoveTransformComponent(StartPos, EndPos, 2))
+box.addComponent(new utils.MoveTransformComponent(StartPos, EndPos, 2))
 
 // Add entity to engine
 engine.addEntity(box)
@@ -82,7 +101,7 @@ path[2] = new Vector3(15, 1, 15)
 path[3] = new Vector3(15, 1, 1)
 
 // Move entity
-box.addComponent(new utils.TransformUtils.Components.FollowPathComponent(path, 2))
+box.addComponent(new utils.FollowPathComponent(path, 2))
 
 // Add entity to engine
 engine.addEntity(box)
@@ -116,7 +135,7 @@ let StartRot = Quaternion.Euler(90, 0, 0)
 let EndRot =  Quaternion.Euler(270, 0, 0)
 
 // Rotate entity
-box.addComponent(new utils.TransformUtils.Components.RotateTransformComponent(StartRot, EndRot, 2))
+box.addComponent(new utils.RotateTransformComponent(StartRot, EndRot, 2))
 
 // Add entity to engine
 engine.addEntity(box)
@@ -158,7 +177,7 @@ let StartSize = new Vector3(1, 1, 1)
 let EndSize = new Vector3(0.75, 2, 0.75)
 
 // Move entity
-box.addComponent(new utils.TransformUtils.Components.ScaleTransformComponent(StartSize, EndSize, 2))
+box.addComponent(new utils.ScaleTransformComponent(StartSize, EndSize, 2))
 
 // Add entity to engine
 engine.addEntity(box)
@@ -179,7 +198,7 @@ The following values are accepted:
 The following example moves a box following an ease-in rate:
 
 ```ts
-box.addComponent(new utils.TransformUtils.Components.MoveTransformComponent(StartPos, EndPos, 2, null, utils.TransformUtils.Math.Interpolation.InterpolationType.EASEINQUAD))
+box.addComponent(new utils.MoveTransformComponent(StartPos, EndPos, 2, null, utils.InterpolationType.EASEINQUAD))
 ```
 
 
@@ -194,7 +213,7 @@ All of the translation components, the `MoveTransformComponent`, `rotateTransfor
 The following example logs a message when the box finishes its movement. The example uses `MoveTransformComponent`, but the same applies to `rotateTransformComponent` and `ScaleTransformComponent`.
 
 ```ts
-box.addComponent(new utils.TransformUtils.Components.MoveTransformComponent(StartPos, EndPos, 2, () => {
+box.addComponent(new utils.MoveTransformComponent(StartPos, EndPos, 2, () => {
 	log("finished moving box")
 }))
 ```
@@ -209,7 +228,7 @@ The `FollowPathComponent` has a two optional arguments that execute functions wh
 The following example logs a messages when the box finishes each segment of the path, and another when the entire path is done.
 
 ```ts
-box.addComponent(new utils.TransformUtils.Components.FollowPathComponent(path, 2,  
+box.addComponent(new utils.FollowPathComponent(path, 2,  
 	() => {
 		log("finished moving box")
 	},
@@ -255,8 +274,8 @@ let redMaterial = new Material()
 redMaterial.albedoColor = Color3.Red()
 
 // Add a Toggle component
-box.addComponent(new utils.Toggle.ToggleComponent(utils.Toggle.ToggleState.Off, value =>{
-	if (value == utils.Toggle.ToggleState.On){
+box.addComponent(new utils.ToggleComponent(utils.ToggleState.Off, value =>{
+	if (value == utils.ToggleState.On){
 		//set color to green
 		box.addComponentOrReplace(greenMaterial)
 	}
@@ -269,7 +288,7 @@ box.addComponent(new utils.Toggle.ToggleComponent(utils.Toggle.ToggleState.Off, 
 
 //listen for click on the box and toggle it's state
 box.addComponent(new OnClick(event=>{
-	box.getComponent(utils.Toggle.ToggleComponent).toggle()
+	box.getComponent(utils.ToggleComponent).toggle()
 }))
 
 // Add entity to engine
@@ -295,18 +314,18 @@ let Pos1 = new Vector3(1, 1, 1)
 let Pos2 = new Vector3(1, 1, 2)
 
 //toggle for wine bottle
-box.addComponent(new utils.Toggle.ToggleComponent(utils.Toggle.ToggleState.Off, value =>{
-	if (value == utils.Toggle.ToggleState.On){
-		box.addComponentOrReplace(new utils.TransformUtils.Components.MoveTransformComponent(Pos1,Pos2, 0.5))
+box.addComponent(new utils.ToggleComponent(utils.ToggleState.Off, value =>{
+	if (value == utils.ToggleState.On){
+		box.addComponentOrReplace(new utils.MoveTransformComponent(Pos1,Pos2, 0.5))
 	}
 	else{
-		box.addComponentOrReplace(new utils.TransformUtils.Components.MoveTransformComponent(Pos2,Pos1, 0.5))
+		box.addComponentOrReplace(new utils.MoveTransformComponent(Pos2,Pos1, 0.5))
 	}
 }))
 
 //listen for click on the box and toggle it's state
 box.addComponent(new OnClick(event=>{
-	box.getComponent(utils.Toggle.ToggleComponent).toggle()
+	box.getComponent(utils.ToggleComponent).toggle()
 }))
 
 // Add entity to engine
@@ -335,7 +354,7 @@ easterEggShape.visible = false
 easterEgg.addComponent(easterEggShape)
 
 // add a delayed function
-easterEgg.addComponent(new utils.TimerUtils.Components.Delay(100000, () => {
+easterEgg.addComponent(new utils.Delay(100000, () => {
 	easterEgg.getComponent(BoxShape).visible = true
 }))
 
@@ -362,7 +381,7 @@ box.addComponent(new BoxShape())
 
 // add a function to run when clicked
 box.addComponent(new OnClick(() => {
-	box.addComponent(new utils.TimerUtils.Components.ExpireIn(500))
+	box.addComponent(new utils.ExpireIn(500))
 }))
 
 // add entity to scene
@@ -386,7 +405,7 @@ box.addComponent(new BoxShape())
 box.addComponent(new Transform())
 
 // add a repeated function
-box.addComponent(new utils.TimerUtils.Components.Interval(500, () => {
+box.addComponent(new utils.Interval(500, () => {
 	let randomSize = Math.random()
 	box.getComponent(Transform).scale.setAll(randomSize)
 }))
