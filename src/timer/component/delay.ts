@@ -1,5 +1,5 @@
 import { ITimerComponent } from "./itimercomponent";
-import TimerSystem from "../system/timerSystem";
+import { TimerSystem } from "../system/timerSystem";
 
 /**
  * Execute once after X milliseconds
