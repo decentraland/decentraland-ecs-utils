@@ -26,4 +26,4 @@ export default {
   Delay,
   ExpireIn,
   Interval
-}
+};
