@@ -12,6 +12,10 @@ import { Delay } from "./timer/component/delay";
 import { ExpireIn } from "./timer/component/expire";
 import { Interval } from "./timer/component/interval";
 
+import { TriggerSystem, TriggerBoxShape, TriggerSphereShape, TriggerComponent } from "./triggers/triggerSystem";
+
+import { ActionsSequenceSystem } from "./actionsSequenceSystem/actionsSequenceSystem"
+
 export default {
   TransformSystem,
   MoveTransformComponent,
@@ -25,5 +29,10 @@ export default {
   ToggleState,
   Delay,
   ExpireIn,
-  Interval
+  Interval,
+  TriggerComponent,
+  TriggerSystem,
+  TriggerSphereShape,
+  TriggerBoxShape,
+  ActionsSequenceSystem
 };
