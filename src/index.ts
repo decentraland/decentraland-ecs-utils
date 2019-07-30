@@ -14,7 +14,7 @@ import { Interval } from "./timer/component/interval";
 
 import { TriggerSystem, TriggerBoxShape, TriggerSphereShape, TriggerComponent } from "./triggers/triggerSystem";
 
-import { ActionsSequenceSystem } from "./actionsSequenceSystem/actionsSequenceSystem"
+import { ActionsSequenceSystem } from "./actionsSequenceSystem/actionsSequenceSystem";
 
 export default {
   TransformSystem,
