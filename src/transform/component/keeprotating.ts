@@ -22,7 +22,7 @@ export class KeepRotatingComponent implements ITransformComponent{
     }
 
     update(dt: number): void {
-        this.rotation = this.rotation.multiply(this.rotationVelocity.scale(dt))
+        this.rotation = Quaternion.Slerp(Quaternion.Identity, this.rotationVelocity, dt)
     }
 
     hasFinished(): boolean {
