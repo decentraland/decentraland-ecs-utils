@@ -141,14 +141,40 @@ box.addComponent(new utils.RotateTransformComponent(StartRot, EndRot, 2))
 engine.addEntity(box)
 ```
 
-
-<!--
 ### KeepRotatingComponent
+Rotates an entity indefinitely until stopped or component is removed
 
-KeepRotatingComponent
+`KeepRotatingComponent` has one required arguments:
 
-TODO: Understand purpose
--->
+- `rotationVelocity`: desired rotation per second
+
+It exposes the following method:
+
+- `stop()`: stops rotation and removes component from entity
+
+In the following example a cube will rotate until clicked:
+
+```ts
+import utils from "../node_modules/decentraland-ecs-utils/index"
+
+// Create entity
+const box = new Entity()
+
+// Give entity a shape and transform
+box.addComponent(new BoxShape())
+box.addComponent(new Transform({ position: new Vector3(1, 1, 1) }))
+
+// Rotate entity
+box.addComponent(new utils.KeepRotatingComponent(Quaternion.Euler(0, 45, 0)))
+
+// Listen for click
+box.addComponent(new OnClick(()=>{
+  box.getComponent(utils.KeepRotatingComponent).stop()
+}))
+
+// Add entity to engine
+engine.addEntity(box)
+```
 
 ### Change scale
 
@@ -415,3 +441,222 @@ engine.addEntity(box)
 ```
 
 To repeat the execution of a task that isn't directly tied to any entity in the scene, create a dummy entity that only holds an `Interval` component.
+
+## Triggers
+
+The `TriggerComponent` has the following arguments:
+
+- `shape`: shape of the collider (TriggerBoxShape | TriggerSphereShape)
+- `layer`: bit layer of the Tigger (usefull to discriminate between trigger events)
+- `triggeredByLayer`: against which layers are we going to check trigger's collisions
+- `onTriggerEnter`: callback when trigger is entered
+- `onTriggerExit`: callback when trigger is exit
+- `onCameraEnter`: callback when camera enters trigger
+- `onCameraExit`: callback when camera exits trigger
+- `enableDebug`: creates a debugging entity to make trigger visible
+
+It exposes the following property:
+
+- `enabled`: set trigger as enabled or disabled
+
+The following example creates a trigger that change it position randomly when triggered by the camera
+
+```ts
+import utils from "../node_modules/decentraland-ecs-utils/index"
+
+//create entity
+const box = new Entity()
+
+//create shape for entity and disable it collision
+box.addComponent(new BoxShape())
+box.getComponent(BoxShape).withCollisions = false
+
+//set transform component with initial position
+box.addComponent(new Transform({ position: new Vector3(2, 0, 2) }))
+
+//create trigger for entity
+box.addComponent(new utils.TriggerComponent(new utils.TriggerBoxShape(Vector3.One(), Vector3.Zero()), 0, 0, null, null,
+  () => {
+    box.getComponent(Transform).position = new Vector3(1 + Math.random() * 14, 0, 1 + Math.random() * 14)
+  }, null))
+
+//add entity to engine
+engine.addEntity(box)
+```
+
+NOTE: You can set a custom shape for the camera trigger according to your needs
+
+```ts
+utils.TriggerSystem.instance.setCameraTriggerShape(new utils.TriggerBoxShape(new Vector3(0.5, 1.8, 0.5), new Vector3(0, -0.91, 0)))
+```
+
+## Trigger's layer
+
+You can define a layer (bitwise) for a trigger and set which other trigger's layers can trigger it
+
+The following example creates a scene with food (a cone) that can be triggered (or eaten) by the cat (a box) or the mouse (a sphere). Also the mouse can be eaten by the cat.
+When the food or the mouse are eaten they will respawn in a random location.
+The cat and the mouse will always move towards the food. 
+
+```ts
+import utils from "../node_modules/decentraland-ecs-utils/index"
+
+//define layers
+const foodLayer = 1
+const mouseLayer = 2
+const catLayer = 4
+
+//create food
+const food = new Entity()
+food.addComponent(new ConeShape())
+food.getComponent(ConeShape).withCollisions = false
+food.addComponent(new Transform({ position: new Vector3(1 + Math.random() * 14, 0, 1 + Math.random() * 14) }))
+food.addComponent(new utils.TriggerComponent(new utils.TriggerBoxShape(Vector3.One(), Vector3.Zero()),
+  foodLayer, mouseLayer | catLayer,
+  () => {
+    food.getComponent(Transform).position = new Vector3(1 + Math.random() * 14, 0, 1 + Math.random() * 14)
+    mouse.addComponentOrReplace(new utils.MoveTransformComponent(mouse.getComponent(Transform).position, food.getComponent(Transform).position, 4))
+    cat.addComponentOrReplace(new utils.MoveTransformComponent(cat.getComponent(Transform).position, food.getComponent(Transform).position, 4))
+  }))
+
+//create mouse
+const mouse = new Entity()
+mouse.addComponent(new SphereShape())
+mouse.getComponent(SphereShape).withCollisions = false
+mouse.addComponent(new Transform({ position: new Vector3(1 + Math.random() * 14, 0, 1 + Math.random() * 14), scale: new Vector3(0.5, 0.5, 0.5) }))
+mouse.addComponent(new utils.TriggerComponent(new utils.TriggerBoxShape(Vector3.One(), Vector3.Zero()),
+  mouseLayer, catLayer,
+  () => {
+    mouse.getComponent(Transform).position = new Vector3(1 + Math.random() * 14, 0, 1 + Math.random() * 14)
+    mouse.addComponentOrReplace(new utils.MoveTransformComponent(mouse.getComponent(Transform).position, food.getComponent(Transform).position, 4))
+  }))
+
+//create cat
+const cat = new Entity()
+cat.addComponent(new BoxShape())
+cat.getComponent(BoxShape).withCollisions = false
+cat.addComponent(new Transform({ position: new Vector3(1 + Math.random() * 14, 0, 1 + Math.random() * 14) }))
+cat.addComponent(new utils.TriggerComponent(new utils.TriggerBoxShape(Vector3.One(), Vector3.Zero()), catLayer))
+
+//set initial movement for mouse and cat
+mouse.addComponentOrReplace(new utils.MoveTransformComponent(mouse.getComponent(Transform).position, food.getComponent(Transform).position, 4))
+cat.addComponentOrReplace(new utils.MoveTransformComponent(cat.getComponent(Transform).position, food.getComponent(Transform).position, 4))
+
+//add entities to engine
+engine.addEntity(food)
+engine.addEntity(mouse)
+engine.addEntity(cat)
+```
+## Actions Sequence System
+Runs a sequence of actions.
+
+The `ActionsSequenceSystem` exposes the following methods:
+
+- `startSequence()`: starts a sequence of actions
+- `setOnFinishCallback()`: set a callback for when sequence is finished
+- `isRunning()`: get if a sequence is running
+- `stop()`: stops a running sequence
+- `resume()`: resume a stopped sequence
+- `reset()`: reset a sequence so it starts over
+
+## Actions Sequence Builder
+Creates a sequence of actions.
+
+The `SequenceBuilder` exposes the following methods:
+
+- `then()`: enqueue an action
+- `if()`: use a conditional to branch the sequence
+- `else()`: used with if() to create a branch in the sequence
+- `endIf()`: ends the definition of the conditional block
+- `while()`: keep running actions defined in the block until condition is met
+- `breakWhile()`: ends the definition of the while block
+
+## IAction
+Interface that define actions.
+
+The `IAction` definition:
+
+- `hasFinished`: set if the action has finish it execution
+- `onStart()`: first method that will be called upon action execution
+- `update()`: called every frame for action's internal update
+- `onFinish()`: called when action has finish executing
+
+The following example creates a box that will change it scale until is clicked. Then it will reset it scale and move
+
+```ts
+import utils from "../node_modules/decentraland-ecs-utils/index"
+import { ActionsSequenceSystem } from "../node_modules/decentraland-ecs-utils/actionsSequenceSystem/actionsSequenceSystem";
+
+//set clicked flag
+let boxClicked = false
+
+//create box entity
+const box = new Entity()
+box.addComponent(new BoxShape())
+box.addComponent(new Transform({ position: new Vector3(14, 0, 14) }))
+box.addComponent(new OnClick(() => boxClicked = true))
+engine.addEntity(box)
+
+//define action for scaling
+class ScaleAction implements ActionsSequenceSystem.IAction {
+  hasFinished: boolean = false;
+  entity: Entity
+  scale: Vector3
+
+  constructor(entity: Entity, scale: Vector3) {
+    this.entity = entity
+    this.scale = scale
+  }
+
+  onStart(): void {
+    const transform = this.entity.getComponent(Transform)
+    this.hasFinished = false
+
+    this.entity.addComponentOrReplace(new utils.ScaleTransformComponent(transform.scale, this.scale, 1.5,
+      () => {
+        this.hasFinished = true
+      },utils.InterpolationType.EASEINQUAD))
+  }
+  update(dt: number): void {
+  }
+  onFinish(): void {
+  }
+}
+
+//define action for movement
+class MoveAction implements ActionsSequenceSystem.IAction {
+  hasFinished: boolean = false;
+  entity: Entity
+  position: Vector3
+
+  constructor(entity: Entity, position: Vector3) {
+    this.entity = entity
+    this.position = position
+  }
+
+  onStart(): void {
+    const transform = this.entity.getComponent(Transform)
+
+    this.entity.addComponentOrReplace(new utils.MoveTransformComponent(transform.position, this.position, 4,
+      () => {
+        this.hasFinished = true
+      }))
+  }
+  update(dt: number): void {
+  }
+  onFinish(): void {
+  }
+}
+
+//create sequence
+const sequence = new utils.ActionsSequenceSystem.SequenceBuilder()
+  .while(() => !boxClicked)
+    .then(new ScaleAction(box, new Vector3(1.5,1.5,1.5)))
+    .then(new ScaleAction(box, new Vector3(0.5,0.5,0.5)))
+  .endWhile()
+  .then(new ScaleAction(box, new Vector3(1,1,1)))
+  .then(new MoveAction(box, new Vector3(1,0,1)))
+
+//create sequence system, add it to engine and run sequence
+engine.addSystem(new utils.ActionsSequenceSystem(sequence))
+```
