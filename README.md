@@ -6,6 +6,7 @@ This library includes a number of helpful pre-built tools that include component
 	- [Move an entity](#move-an-entity)
 	- [Follow a path](#follow-a-path)
 	- [Rotate an entity](#rotate-an-entity)
+	- [Sustain rotation](#sustain-rotation)
 	- [Change scale](#change-scale)
 	- [Non-linear changes](#non-linear-changes)
 	- [Callback on finish](#callback-on-finish)
@@ -14,6 +15,14 @@ This library includes a number of helpful pre-built tools that include component
 	- [Delay a function](#delay-a-function)
 	- [Delay removing an entity](#delay-removing-an-entity)
 	- [Repeat at an Interval](#repeat-at-an-interval)
+- [Triggers](#triggers)
+	- [Trigger layers](#trigger-layers)
+- [Action sequence](#action-sequence)
+	- [IAction](#iaction)
+	- [Action Sequence Builder](#action-sequence-builder)
+	- [Action Sequence System](#action-aequence-system)
+	- [Full example](#full-example)
+
 
 ## Using the Utils library
 
@@ -79,7 +88,8 @@ To move an entity over several points of a path over a period of time, use the `
 
 - `points`: An array of `Vector3` positions that form the path.
 - `duration`: The duration (in seconds) of each segment in the path.
-// TODO of the segments of the whole path?
+
+// TODO of the segments or of the whole path?
 
 This example moves an entity over through four points:
 
@@ -141,18 +151,20 @@ box.addComponent(new utils.RotateTransformComponent(StartRot, EndRot, 2))
 engine.addEntity(box)
 ```
 
-### KeepRotatingComponent
-Rotates an entity indefinitely until stopped or component is removed
+### Sustain rotation  
 
-`KeepRotatingComponent` has one required arguments:
+To rotates an entity continuously, use `KeepRotatingComponent`. The entity will keep rotating forever until it's explicitly stopped or the component is removed.
 
-- `rotationVelocity`: desired rotation per second
 
-It exposes the following method:
+`KeepRotatingComponent` has one required argument:
 
-- `stop()`: stops rotation and removes component from entity
+- `rotationVelocity`: A quaternion describing the desired rotation to perform each second second. For example `Quaternion.Euler(0, 45, 0)` rotates the entity on the Y axis at a speed of 45 degrees per second, meaning that it makes a full turn every 8 seconds. 
 
-In the following example a cube will rotate until clicked:
+The component also contains the following method:
+
+- `stop()`: stops rotation and removes the component from any entities its added to.
+
+In the following example, a cube rotates continuously until clicked:
 
 ```ts
 import utils from "../node_modules/decentraland-ecs-utils/index"
@@ -444,22 +456,24 @@ To repeat the execution of a task that isn't directly tied to any entity in the 
 
 ## Triggers
 
+The trigger component can execute whatever you want whenever the player's position or the position of a specific entity or type of entity overlaps with an area.
+
 The `TriggerComponent` has the following arguments:
 
-- `shape`: shape of the collider (TriggerBoxShape | TriggerSphereShape)
-- `layer`: bit layer of the Tigger (usefull to discriminate between trigger events)
-- `triggeredByLayer`: against which layers are we going to check trigger's collisions
-- `onTriggerEnter`: callback when trigger is entered
-- `onTriggerExit`: callback when trigger is exit
-- `onCameraEnter`: callback when camera enters trigger
-- `onCameraExit`: callback when camera exits trigger
-- `enableDebug`: creates a debugging entity to make trigger visible
+- `shape`: Shape of the triggering collider area, either a cube or a sphere (`TriggerBoxShape` or `TriggerSphereShape`)
+- `layer`: Layer of the Trigger, useful to discriminate between trigger events. You can set multiple layers by using a `|` symbol.
+- `triggeredByLayer`: Against which layers to check collisions
+- `onTriggerEnter`: Callback when an entity of a valid layer enters the trigger area
+- `onTriggerExit`: Callback when an entity of a valid layer leaves the trigger area
+- `onCameraEnter`: Callback when the player enters the trigger area
+- `onCameraExit`: Callback when the player leaves the trigger area
+- `enableDebug`: When true makes the trigger area visible for debug purposes.
 
 It exposes the following property:
 
-- `enabled`: set trigger as enabled or disabled
+- `enabled`: Set trigger as enabled or disabled
 
-The following example creates a trigger that change it position randomly when triggered by the camera
+The following example creates a trigger that changes its position randomly when triggered by the player.
 
 ```ts
 import utils from "../node_modules/decentraland-ecs-utils/index"
@@ -467,7 +481,7 @@ import utils from "../node_modules/decentraland-ecs-utils/index"
 //create entity
 const box = new Entity()
 
-//create shape for entity and disable it collision
+//create shape for entity and disable its collision
 box.addComponent(new BoxShape())
 box.getComponent(BoxShape).withCollisions = false
 
@@ -475,28 +489,45 @@ box.getComponent(BoxShape).withCollisions = false
 box.addComponent(new Transform({ position: new Vector3(2, 0, 2) }))
 
 //create trigger for entity
-box.addComponent(new utils.TriggerComponent(new utils.TriggerBoxShape(Vector3.One(), Vector3.Zero()), 0, 0, null, null,
-  () => {
-    box.getComponent(Transform).position = new Vector3(1 + Math.random() * 14, 0, 1 + Math.random() * 14)
-  }, null))
+box.addComponent(new utils.TriggerComponent(
+	 new utils.TriggerBoxShape(Vector3.One(), Vector3.Zero()), //shape
+	 0, //layer
+	 0, //triggeredByLayer
+	 null, //onTriggerEnter
+	 null, //onTriggerExit
+	  () => {  //onCameraEnter
+	  	log("triggered!")
+    	box.getComponent(Transform).position = new Vector3(
+			1 + Math.random() * 14, 0, 1 + Math.random() * 14
+			)
+	  }, 
+	  null //onCameraExit
+	  ))
 
 //add entity to engine
 engine.addEntity(box)
 ```
 
-NOTE: You can set a custom shape for the camera trigger according to your needs
+You can set a custom shape for the player trigger according to your needs:
 
 ```ts
 utils.TriggerSystem.instance.setCameraTriggerShape(new utils.TriggerBoxShape(new Vector3(0.5, 1.8, 0.5), new Vector3(0, -0.91, 0)))
 ```
 
-## Trigger's layer
+### Trigger layers
 
-You can define a layer (bitwise) for a trigger and set which other trigger's layers can trigger it
+You can define different layers (bitwise) for triggers, and set which other layers can trigger it.
 
-The following example creates a scene with food (a cone) that can be triggered (or eaten) by the cat (a box) or the mouse (a sphere). Also the mouse can be eaten by the cat.
-When the food or the mouse are eaten they will respawn in a random location.
-The cat and the mouse will always move towards the food. 
+The following example creates a scene that has:
+
+- food (cones)
+- mice (spheres)
+- cats (boxes)
+
+Food is triggered (or eaten) by both cats or mice. Also, mice are eaten by cats, so a mouse's trigger area is triggered by only cats.
+
+Cats and mice always move towards the food. When food or mice are eaten, they respawn in a random location.
+
 
 ```ts
 import utils from "../node_modules/decentraland-ecs-utils/index"
@@ -511,9 +542,11 @@ const food = new Entity()
 food.addComponent(new ConeShape())
 food.getComponent(ConeShape).withCollisions = false
 food.addComponent(new Transform({ position: new Vector3(1 + Math.random() * 14, 0, 1 + Math.random() * 14) }))
-food.addComponent(new utils.TriggerComponent(new utils.TriggerBoxShape(Vector3.One(), Vector3.Zero()),
-  foodLayer, mouseLayer | catLayer,
-  () => {
+food.addComponent(new utils.TriggerComponent(
+	new utils.TriggerBoxShape(Vector3.One(), Vector3.Zero()),
+	foodLayer, 
+	mouseLayer | catLayer,
+	() => {
     food.getComponent(Transform).position = new Vector3(1 + Math.random() * 14, 0, 1 + Math.random() * 14)
     mouse.addComponentOrReplace(new utils.MoveTransformComponent(mouse.getComponent(Transform).position, food.getComponent(Transform).position, 4))
     cat.addComponentOrReplace(new utils.MoveTransformComponent(cat.getComponent(Transform).position, food.getComponent(Transform).position, 4))
@@ -524,9 +557,11 @@ const mouse = new Entity()
 mouse.addComponent(new SphereShape())
 mouse.getComponent(SphereShape).withCollisions = false
 mouse.addComponent(new Transform({ position: new Vector3(1 + Math.random() * 14, 0, 1 + Math.random() * 14), scale: new Vector3(0.5, 0.5, 0.5) }))
-mouse.addComponent(new utils.TriggerComponent(new utils.TriggerBoxShape(Vector3.One(), Vector3.Zero()),
-  mouseLayer, catLayer,
-  () => {
+mouse.addComponent(new utils.TriggerComponent(
+	new utils.TriggerBoxShape(Vector3.One(), Vector3.Zero()),
+	mouseLayer, 
+	catLayer,
+	() => {
     mouse.getComponent(Transform).position = new Vector3(1 + Math.random() * 14, 0, 1 + Math.random() * 14)
     mouse.addComponentOrReplace(new utils.MoveTransformComponent(mouse.getComponent(Transform).position, food.getComponent(Transform).position, 4))
   }))
@@ -536,52 +571,72 @@ const cat = new Entity()
 cat.addComponent(new BoxShape())
 cat.getComponent(BoxShape).withCollisions = false
 cat.addComponent(new Transform({ position: new Vector3(1 + Math.random() * 14, 0, 1 + Math.random() * 14) }))
-cat.addComponent(new utils.TriggerComponent(new utils.TriggerBoxShape(Vector3.One(), Vector3.Zero()), catLayer))
+cat.addComponent(new utils.TriggerComponent(
+	new utils.TriggerBoxShape(Vector3.One(), Vector3.Zero()), 
+	catLayer
+))
 
 //set initial movement for mouse and cat
-mouse.addComponentOrReplace(new utils.MoveTransformComponent(mouse.getComponent(Transform).position, food.getComponent(Transform).position, 4))
-cat.addComponentOrReplace(new utils.MoveTransformComponent(cat.getComponent(Transform).position, food.getComponent(Transform).position, 4))
+mouse.addComponentOrReplace(new utils.MoveTransformComponent(
+	mouse.getComponent(Transform).position, 
+	food.getComponent(Transform).position, 
+	4
+))
+cat.addComponentOrReplace(new utils.MoveTransformComponent(
+	cat.getComponent(Transform).position, 
+	food.getComponent(Transform).position, 
+	4
+))
 
 //add entities to engine
 engine.addEntity(food)
 engine.addEntity(mouse)
 engine.addEntity(cat)
 ```
-## Actions Sequence System
-Runs a sequence of actions.
 
-The `ActionsSequenceSystem` exposes the following methods:
+## Action sequence
 
-- `startSequence()`: starts a sequence of actions
-- `setOnFinishCallback()`: set a callback for when sequence is finished
-- `isRunning()`: get if a sequence is running
-- `stop()`: stops a running sequence
-- `resume()`: resume a stopped sequence
-- `reset()`: reset a sequence so it starts over
+Use an action sequence to play a series of actions one after another.
 
-## Actions Sequence Builder
-Creates a sequence of actions.
+### IAction
+
+The `IAction` interface defines the actions that can be added into a sequence. It includes:
+
+- `hasFinished`: Boolean for the state of the action, wether it has finished its execution or not.
+- `onStart()`: First method that is called upon the execution of the action.
+- `update()`: Called on every frame on the action's internal update.
+- `onFinish()`: Called when the action has finished executing.
+
+
+### Action Sequence Builder
+
+This object creates action sequences, using simple building blocks.
 
 The `SequenceBuilder` exposes the following methods:
 
-- `then()`: enqueue an action
-- `if()`: use a conditional to branch the sequence
-- `else()`: used with if() to create a branch in the sequence
-- `endIf()`: ends the definition of the conditional block
-- `while()`: keep running actions defined in the block until condition is met
-- `breakWhile()`: ends the definition of the while block
+- `then()`: Enqueue an action so that it's executed when the previous one finishes.
+- `if()`: Use a condition to branch the sequence
+- `else()`: Used with if() to create an alternative branch
+- `endIf()`: Ends the definition of the conditional block
+- `while()`: Keep running the actions defined in a block until a condition is no longer met.
+- `breakWhile()`: Ends the definition of the while block
 
-## IAction
-Interface that define actions.
 
-The `IAction` definition:
+### Action Sequence System
 
-- `hasFinished`: set if the action has finish it execution
-- `onStart()`: first method that will be called upon action execution
-- `update()`: called every frame for action's internal update
-- `onFinish()`: called when action has finish executing
+The action sequence system takes care of running the sequence of actions. The `ActionsSequenceSystem` exposes the following methods:
 
-The following example creates a box that will change it scale until is clicked. Then it will reset it scale and move
+- `startSequence()`: Starts a sequence of actions
+- `setOnFinishCallback()`: Sets a callback for when the whole sequence is finished
+- `isRunning()`: Returns a boolean that determines if the sequence is running
+- `stop()`: Stops a running the sequence
+- `resume()`: Resumes a stopped sequence
+- `reset()`: Resets a sequence so that it starts over
+
+
+### Full example
+
+The following example creates a box that changes its scale until clicked. Then it resets its scale and moves.
 
 ```ts
 import utils from "../node_modules/decentraland-ecs-utils/index"
@@ -597,7 +652,7 @@ box.addComponent(new Transform({ position: new Vector3(14, 0, 14) }))
 box.addComponent(new OnClick(() => boxClicked = true))
 engine.addEntity(box)
 
-//define action for scaling
+//Use IAction to define action for scaling
 class ScaleAction implements ActionsSequenceSystem.IAction {
   hasFinished: boolean = false;
   entity: Entity
@@ -608,6 +663,7 @@ class ScaleAction implements ActionsSequenceSystem.IAction {
     this.scale = scale
   }
 
+  //Method when action starts
   onStart(): void {
     const transform = this.entity.getComponent(Transform)
     this.hasFinished = false
@@ -617,13 +673,15 @@ class ScaleAction implements ActionsSequenceSystem.IAction {
         this.hasFinished = true
       },utils.InterpolationType.EASEINQUAD))
   }
+  //Method to run on every frame
   update(dt: number): void {
   }
+  //Method to run at the end
   onFinish(): void {
   }
 }
 
-//define action for movement
+//Use IAction to define action for movement
 class MoveAction implements ActionsSequenceSystem.IAction {
   hasFinished: boolean = false;
   entity: Entity
@@ -634,6 +692,7 @@ class MoveAction implements ActionsSequenceSystem.IAction {
     this.position = position
   }
 
+  //Method when action starts
   onStart(): void {
     const transform = this.entity.getComponent(Transform)
 
@@ -642,13 +701,15 @@ class MoveAction implements ActionsSequenceSystem.IAction {
         this.hasFinished = true
       }))
   }
+  //Method to run on every frame
   update(dt: number): void {
   }
+  //Method to run at the end
   onFinish(): void {
   }
 }
 
-//create sequence
+//Use sequence builder to create a sequence
 const sequence = new utils.ActionsSequenceSystem.SequenceBuilder()
   .while(() => !boxClicked)
     .then(new ScaleAction(box, new Vector3(1.5,1.5,1.5)))
@@ -657,6 +718,6 @@ const sequence = new utils.ActionsSequenceSystem.SequenceBuilder()
   .then(new ScaleAction(box, new Vector3(1,1,1)))
   .then(new MoveAction(box, new Vector3(1,0,1)))
 
-//create sequence system, add it to engine and run sequence
+//Create a sequence system, and add it to the engine to run the sequence
 engine.addSystem(new utils.ActionsSequenceSystem(sequence))
 ```
