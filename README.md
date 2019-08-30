@@ -514,6 +514,8 @@ You can set a custom shape for the player trigger according to your needs:
 utils.TriggerSystem.instance.setCameraTriggerShape(new utils.TriggerBoxShape(new Vector3(0.5, 1.8, 0.5), new Vector3(0, -0.91, 0)))
 ```
 
+> Note: The trigger shape can be positioned or stretched, but it can't be rotated on any axis. This is a design decision taken for performance reasons. To cover a slanted area, we recommend adding multiple triggers if applicable.
+
 ### Trigger layers
 
 You can define different layers (bitwise) for triggers, and set which other layers can trigger it.
