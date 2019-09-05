@@ -87,9 +87,7 @@ To move an entity over several points of a path over a period of time, use the `
 `FollowPathComponent` has two required arguments:
 
 - `points`: An array of `Vector3` positions that form the path.
-- `duration`: The duration (in seconds) of each segment in the path.
-
-// TODO of the segments or of the whole path?
+- `duration`: The duration (in seconds) of the whole path.
 
 This example moves an entity over through four points:
 
