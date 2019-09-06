@@ -382,7 +382,7 @@ export class TriggerComponent {
      */
     shape: TriggerBoxShape | TriggerSphereShape
     /**
-     * byte layer of the Tigger (usefull to discriminate between trigger events)
+     * bit layer of the Tigger (usefull to discriminate between trigger events)
      */
     layer: number = 0
     /**
@@ -412,6 +412,17 @@ export class TriggerComponent {
 
     private _debugEnabled: boolean
 
+    /**
+     * 
+     * @param shape shape of the triggering collider area
+     * @param layer layer of the Trigger, useful to discriminate between trigger events. You can set multiple layers by using a | symbol.
+     * @param triggeredByLayer against which layers to check collisions
+     * @param onTriggerEnter callback when an entity of a valid layer enters the trigger area
+     * @param onTriggerExit callback when an entity of a valid layer leaves the trigger area
+     * @param onCameraEnter callback when the player enters the trigger area
+     * @param onCameraExit callback when the player leaves the trigger area
+     * @param enableDebug when true makes the trigger area visible for debug purposes.
+     */
     constructor(shape: TriggerBoxShape | TriggerSphereShape, layer: number = 0, triggeredByLayer: number = 0,
         onTriggerEnter?: (entity: Entity) => void, onTriggerExit?: (entity: Entity) => void, onCameraEnter?: () => void, onCameraExit?: () => void, enableDebug: boolean = false) {
         TriggerSystem.createAndAddToEngine()

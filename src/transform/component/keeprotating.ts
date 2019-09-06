@@ -12,6 +12,11 @@ export class KeepRotatingComponent implements ITransformComponent{
     private rotation: Quaternion
     private finished: boolean
 
+    /**
+     * Rotates an entity continuously. The entity will keep rotating forever until it's explicitly stopped or the component is removed.
+     * @param rotationVelocity a quaternion describing the desired rotation to perform each second second
+     * @param onFinishCallback called when rotation ends
+     */
     constructor(rotationVelocity: Quaternion, onFinishCallback?: ()=>void){
         this.rotationVelocity = rotationVelocity
         this.onFinishCallback = onFinishCallback

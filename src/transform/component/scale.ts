@@ -22,6 +22,7 @@ export class ScaleTransformComponent implements ITransformComponent{
      * @param end ending scale
      * @param duration duration (in seconds) of start to end scaling
      * @param onFinishCallback called when scaling ends
+     * @param interpolationType type of interpolation to be used (default: LINEAR)
      */
     constructor(start: ReadOnlyVector3, end: ReadOnlyVector3, duration: number, onFinishCallback?: ()=>void, interpolationType: InterpolationType = InterpolationType.LINEAR){
         this.start = start
