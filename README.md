@@ -462,14 +462,10 @@ The `TriggerComponent` has the following arguments:
 - `layer`: Layer of the Trigger, useful to discriminate between trigger events. You can set multiple layers by using a `|` symbol.
 - `triggeredByLayer`: Against which layers to check collisions
 - `onTriggerEnter`: Callback when an entity of a valid layer enters the trigger area
-- `onTriggerExit`: Callback when an entity of a valid layer leaves the trigger area
-- `onCameraEnter`: Callback when the player enters the trigger area
-- `onCameraExit`: Callback when the player leaves the trigger area
-- `enableDebug`: When true makes the trigger area visible for debug purposes.
-
-It exposes the following property:
-
-- `enabled`: Set trigger as enabled or disabled
+- `onTriggerExit`: Callback function for when an entity of a valid layer leaves the trigger area
+- `onCameraEnter`: Callback function for when the player enters the trigger area
+- `onCameraExit`: Callback function for when the player leaves the trigger area
+- `enableDebug`: When true, makes the trigger area visible for debug purposes.
 
 The following example creates a trigger that changes its position randomly when triggered by the player.
 
@@ -486,9 +482,12 @@ box.getComponent(BoxShape).withCollisions = false
 //set transform component with initial position
 box.addComponent(new Transform({ position: new Vector3(2, 0, 2) }))
 
+// create trigger area object, setting size and relative position
+let triggerBox = new utils.TriggerBoxShape(Vector3.One(), Vector3.Zero())
+
 //create trigger for entity
 box.addComponent(new utils.TriggerComponent(
-	 new utils.TriggerBoxShape(Vector3.One(), Vector3.Zero()), //shape
+	 triggerBox, //shape
 	 0, //layer
 	 0, //triggeredByLayer
 	 null, //onTriggerEnter
@@ -506,13 +505,24 @@ box.addComponent(new utils.TriggerComponent(
 engine.addEntity(box)
 ```
 
-You can set a custom shape for the player trigger according to your needs:
+> Note: The trigger shape can be positioned or stretched, but it can't be rotated on any axis. This is a design decision taken for performance reasons. To cover a slanted area, we recommend adding multiple triggers if applicable.
+
+### Dissable a collision component
+
+`TriggerComponent` components have an `enabled` property, which is set to `true` by default when creating it. You can use this property to disable the behavior of the component without removing it.
+
+```TypeScript
+box.getComponent(utils.TriggerComponent).enabled = false
+```
+
+### Set a custom shape for player
+
+You can optionally configure a custom shape and size for the player's trigger area, according to your needs:
 
 ```ts
 utils.TriggerSystem.instance.setCameraTriggerShape(new utils.TriggerBoxShape(new Vector3(0.5, 1.8, 0.5), new Vector3(0, -0.91, 0)))
 ```
 
-> Note: The trigger shape can be positioned or stretched, but it can't be rotated on any axis. This is a design decision taken for performance reasons. To cover a slanted area, we recommend adding multiple triggers if applicable.
 
 ### Trigger layers
 
@@ -537,42 +547,54 @@ const foodLayer = 1
 const mouseLayer = 2
 const catLayer = 4
 
+//define a reusable collision shape object
+let triggerBox = new utils.TriggerBoxShape(Vector3.One(), Vector3.Zero())
+
 //create food
 const food = new Entity()
 food.addComponent(new ConeShape())
 food.getComponent(ConeShape).withCollisions = false
-food.addComponent(new Transform({ position: new Vector3(1 + Math.random() * 14, 0, 1 + Math.random() * 14) }))
+food.addComponent(new Transform({ 
+    position: new Vector3(1 + Math.random() * 14, 0, 1 + Math.random() * 14) 
+}))
 food.addComponent(new utils.TriggerComponent(
-	new utils.TriggerBoxShape(Vector3.One(), Vector3.Zero()),
+	triggerBox,
 	foodLayer, 
 	mouseLayer | catLayer,
 	() => {
     food.getComponent(Transform).position = new Vector3(1 + Math.random() * 14, 0, 1 + Math.random() * 14)
     mouse.addComponentOrReplace(new utils.MoveTransformComponent(mouse.getComponent(Transform).position, food.getComponent(Transform).position, 4))
     cat.addComponentOrReplace(new utils.MoveTransformComponent(cat.getComponent(Transform).position, food.getComponent(Transform).position, 4))
-  }))
+        }
+ ))
 
 //create mouse
 const mouse = new Entity()
 mouse.addComponent(new SphereShape())
 mouse.getComponent(SphereShape).withCollisions = false
-mouse.addComponent(new Transform({ position: new Vector3(1 + Math.random() * 14, 0, 1 + Math.random() * 14), scale: new Vector3(0.5, 0.5, 0.5) }))
+mouse.addComponent(new Transform({
+    position: new Vector3(1 + Math.random() * 14, 0, 1 + Math.random() * 14), 
+    scale: new Vector3(0.5, 0.5, 0.5) 
+}))
 mouse.addComponent(new utils.TriggerComponent(
-	new utils.TriggerBoxShape(Vector3.One(), Vector3.Zero()),
+	triggerBox,
 	mouseLayer, 
 	catLayer,
 	() => {
     mouse.getComponent(Transform).position = new Vector3(1 + Math.random() * 14, 0, 1 + Math.random() * 14)
     mouse.addComponentOrReplace(new utils.MoveTransformComponent(mouse.getComponent(Transform).position, food.getComponent(Transform).position, 4))
-  }))
+         }
+))
 
 //create cat
 const cat = new Entity()
 cat.addComponent(new BoxShape())
 cat.getComponent(BoxShape).withCollisions = false
-cat.addComponent(new Transform({ position: new Vector3(1 + Math.random() * 14, 0, 1 + Math.random() * 14) }))
+cat.addComponent(new Transform({ 
+    position: new Vector3(1 + Math.random() * 14, 0, 1 + Math.random() * 14) 
+}))
 cat.addComponent(new utils.TriggerComponent(
-	new utils.TriggerBoxShape(Vector3.One(), Vector3.Zero()), 
+	triggerBox, 
 	catLayer
 ))
 
