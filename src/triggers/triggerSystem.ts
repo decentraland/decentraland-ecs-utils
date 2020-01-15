@@ -378,8 +378,7 @@ class TriggerWrapper {
   addDebugEntity() {
     if (!TriggerWrapper._debugMaterial) {
       TriggerWrapper._debugMaterial = new Material()
-      TriggerWrapper._debugMaterial.hasAlpha = true
-      TriggerWrapper._debugMaterial.alpha = 0.5
+      TriggerWrapper._debugMaterial.alphaTest = 0.5
     }
 
     if (this._debugEntity == null) {
