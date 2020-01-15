@@ -1,59 +1,68 @@
-import { ITransformComponent } from "./itransformcomponent";
-import { TransformSystem } from "../system/transfromSystem";
-import { InterpolationType, Interpolate } from "../math/interpolation";
+import { ITransformComponent } from './itransformcomponent'
+import { TransformSystem } from '../system/transfromSystem'
+import { InterpolationType, Interpolate } from '../math/interpolation'
 
 /**
  * Component to rotate entity from one rotation (start) to another (end) in an amount of time
  */
-@Component("rotateTransformComponent")
-export class RotateTransformComponent implements ITransformComponent{
-    private start: ReadOnlyQuaternion
-    private end: ReadOnlyQuaternion
-    private speed: number
-    private normalizedTime: number
-    private interpolationType: InterpolationType
-    private lerpTime : number
+@Component('rotateTransformComponent')
+export class RotateTransformComponent implements ITransformComponent {
+  private start: ReadOnlyQuaternion
+  private end: ReadOnlyQuaternion
+  private speed: number
+  private normalizedTime: number
+  private interpolationType: InterpolationType
+  private lerpTime: number
 
-    onFinishCallback? : ()=>void
+  onFinishCallback?: () => void
 
-    /**
-     * Create a RotateTransformComponent instance to add as a component to a Entity
-     * @param start starting rotation
-     * @param end ending rotation
-     * @param duration duration (in seconds) of start to end rotation
-     * @param onFinishCallback called when rotation ends
-     * @param interpolationType type of interpolation to be used (default: LINEAR)
-     */
-    constructor(start: ReadOnlyQuaternion, end: ReadOnlyQuaternion, duration: number, onFinishCallback?: ()=>void, interpolationType: InterpolationType = InterpolationType.LINEAR){
-        this.start = start
-        this.end = end
-        this.normalizedTime = 0;
-        this.lerpTime = 0;
-        this.onFinishCallback = onFinishCallback
-        this.interpolationType = interpolationType
+  /**
+   * Create a RotateTransformComponent instance to add as a component to a Entity
+   * @param start starting rotation
+   * @param end ending rotation
+   * @param duration duration (in seconds) of start to end rotation
+   * @param onFinishCallback called when rotation ends
+   * @param interpolationType type of interpolation to be used (default: LINEAR)
+   */
+  constructor(
+    start: ReadOnlyQuaternion,
+    end: ReadOnlyQuaternion,
+    duration: number,
+    onFinishCallback?: () => void,
+    interpolationType: InterpolationType = InterpolationType.LINEAR
+  ) {
+    this.start = start
+    this.end = end
+    this.normalizedTime = 0
+    this.lerpTime = 0
+    this.onFinishCallback = onFinishCallback
+    this.interpolationType = interpolationType
 
-        if (duration != 0){
-            this.speed = 1 / duration
-        }
-        else{
-            this.speed = 0
-            this.normalizedTime = 1;
-            this.lerpTime = 1;
-        }
-
-        TransformSystem.createAndAddToEngine()
+    if (duration != 0) {
+      this.speed = 1 / duration
+    } else {
+      this.speed = 0
+      this.normalizedTime = 1
+      this.lerpTime = 1
     }
 
-    update(dt: number){
-        this.normalizedTime = Scalar.Clamp(this.normalizedTime + dt * this.speed, 0, 1)
-        this.lerpTime = Interpolate(this.interpolationType, this.normalizedTime)
-    }
+    TransformSystem.createAndAddToEngine()
+  }
 
-    hasFinished(): boolean{
-        return this.normalizedTime >= 1
-    }
+  update(dt: number) {
+    this.normalizedTime = Scalar.Clamp(
+      this.normalizedTime + dt * this.speed,
+      0,
+      1
+    )
+    this.lerpTime = Interpolate(this.interpolationType, this.normalizedTime)
+  }
 
-    assignValueToTransform(transform: Transform){
-        transform.rotation = Quaternion.Slerp(this.start, this.end, this.lerpTime)
-    }
+  hasFinished(): boolean {
+    return this.normalizedTime >= 1
+  }
+
+  assignValueToTransform(transform: Transform) {
+    transform.rotation = Quaternion.Slerp(this.start, this.end, this.lerpTime)
+  }
 }
