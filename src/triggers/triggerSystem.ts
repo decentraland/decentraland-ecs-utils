@@ -419,7 +419,7 @@ class TriggerWrapper {
 
   private static getEntityWorldPosition(entity: IEntity): Vector3 {
     let entityPosition = entity.hasComponent(Transform)
-      ? entity.getComponent(Transform).position
+      ? entity.getComponent(Transform).position.clone()
       : Vector3.Zero()
     let parentEntity = entity.getParent()
 
