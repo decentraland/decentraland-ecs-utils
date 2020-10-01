@@ -106,6 +106,9 @@ export class TriggerSystem implements ISystem {
   private static removeTriggerFromSystem(wrapper: TriggerWrapper) {
     let activeCollisions = wrapper.getActiveCollisions()
     for (let i = 0; i < activeCollisions.length; i++) {
+      if (activeCollisions[i] === TriggerSystem._instance?._cameraTriggerWrapper) continue
+      if (activeCollisions[i].trigger == null) continue
+      
       if (activeCollisions[i].trigger.onTriggerExit && wrapper.entity)
         (activeCollisions[i].trigger.onTriggerExit as (
           entity: IEntity
