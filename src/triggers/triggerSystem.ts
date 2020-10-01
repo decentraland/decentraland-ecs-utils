@@ -106,10 +106,17 @@ export class TriggerSystem implements ISystem {
   private static removeTriggerFromSystem(wrapper: TriggerWrapper) {
     let activeCollisions = wrapper.getActiveCollisions()
     for (let i = 0; i < activeCollisions.length; i++) {
-      if (activeCollisions[i] === TriggerSystem._instance?._cameraTriggerWrapper) continue
-      if (activeCollisions[i].trigger == null) continue
-      
-      if (activeCollisions[i].trigger.onTriggerExit && wrapper.entity)
+      let activeCollisionHasTrigger = !(
+        activeCollisions[i] ===
+          TriggerSystem._instance?._cameraTriggerWrapper ||
+        activeCollisions[i].trigger == null
+      )
+
+      if (
+        activeCollisionHasTrigger &&
+        activeCollisions[i].trigger.onTriggerExit &&
+        wrapper.entity
+      )
         (activeCollisions[i].trigger.onTriggerExit as (
           entity: IEntity
         ) => void)(wrapper.entity)
@@ -239,8 +246,10 @@ export class TriggerSystem implements ISystem {
     return (
       t1.min.x <= t2.max.x &&
       t1.max.x >= t2.min.x &&
-      t1.min.y <= t2.max.y && t1.max.y >= t2.min.y &&
-      t1.min.z <= t2.max.z && t1.max.z >= t2.min.z
+      t1.min.y <= t2.max.y &&
+      t1.max.y >= t2.min.y &&
+      t1.min.z <= t2.max.z &&
+      t1.max.z >= t2.min.z
     )
   }
 
