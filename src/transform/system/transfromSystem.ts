@@ -9,6 +9,7 @@ export class TransformSystem implements ISystem {
   private static _instance: TransformSystem | null = null
 
   private _components: ComponentConstructor<ITransformComponent>[] = []
+  private _componentGroups = []
 
   static createAndAddToEngine(): TransformSystem {
     if (this._instance == null) {
@@ -27,24 +28,32 @@ export class TransformSystem implements ISystem {
   private constructor() {
     TransformSystem._instance = this
     this._components.push(MoveTransformComponent)
+    this._componentGroups.push(engine.getComponentGroup(MoveTransformComponent, Transform))
+
     this._components.push(RotateTransformComponent)
+    this._componentGroups.push(engine.getComponentGroup(RotateTransformComponent, Transform))
+
     this._components.push(ScaleTransformComponent)
+    this._componentGroups.push(engine.getComponentGroup(ScaleTransformComponent, Transform))
+
     this._components.push(FollowPathComponent)
+    this._componentGroups.push(engine.getComponentGroup(FollowPathComponent, Transform))
+
     this._components.push(KeepRotatingComponent)
+    this._componentGroups.push(engine.getComponentGroup(KeepRotatingComponent, Transform))
   }
 
   update(dt: number) {
-    this._components.forEach(component => {
-      this.updateComponent(dt, component)
-    })
+    for (let i = 0; i < this._components.length; i++) {
+      this.updateComponent(dt, this._components[i], this._componentGroups[i])
+    }
   }
 
   private updateComponent<T extends ITransformComponent>(
     dt: number,
-    component: ComponentConstructor<T>
+    component: ComponentConstructor<T>,
+    group: ComponentGroup
   ) {
-    const group = engine.getComponentGroup(component, Transform)
-
     group.entities.forEach(entity => {
       const transform = entity.getComponent(Transform)
       const comp = entity.getComponent(component)
