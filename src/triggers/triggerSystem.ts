@@ -34,8 +34,10 @@ export class TriggerSystem implements ISystem {
   }
 
   update() {
+    let entitiesWithTriggers = this._componentGroup.entities
+
     //iterate through all entities with triggers and wrap entities that weren't wrapped yet
-    this._componentGroup.entities.forEach(entity => {
+    entitiesWithTriggers.forEach(entity => {
       if (this.shouldWrapTriggerEntity(entity)) {
         this.wrapTriggerEntity(entity)
       }
