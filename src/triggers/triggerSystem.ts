@@ -6,12 +6,15 @@ export class TriggerSystem implements ISystem {
 
   private _triggers: Record<string, TriggerWrapper> = {}
   private _cameraTriggerWrapper: CameraTrigger
+  private _componentGroup: ComponentGroup
 
   private constructor() {
     TriggerSystem._instance = this
     this._cameraTriggerWrapper = new CameraTrigger(
       new TriggerBoxShape(new Vector3(0.5, 1.8, 0.5), new Vector3(0, 0.91, 0))
     )
+
+    this._componentGroup = engine.getComponentGroup(TriggerComponent)
   }
 
   static createAndAddToEngine(): TriggerSystem {
@@ -31,12 +34,8 @@ export class TriggerSystem implements ISystem {
   }
 
   update() {
-    //get entities with trigger component
-    let entitiesWithTriggers = engine.getComponentGroup(TriggerComponent)
-      .entities
-
     //iterate through all entities with triggers and wrap entities that weren't wrapped yet
-    entitiesWithTriggers.forEach(entity => {
+    this._componentGroup.entities.forEach(entity => {
       if (this.shouldWrapTriggerEntity(entity)) {
         this.wrapTriggerEntity(entity)
       }
