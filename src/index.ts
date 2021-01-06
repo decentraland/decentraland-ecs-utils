@@ -12,11 +12,12 @@ import { Delay } from './timer/component/delay'
 import { ExpireIn } from './timer/component/expire'
 import { Interval } from './timer/component/interval'
 import { map, clamp } from './helpers/helperfunctions'
+import { addTestCube, addLabel } from './helpers/testCube'
 import {
   TriggerSystem,
   TriggerBoxShape,
   TriggerSphereShape,
-  TriggerComponent,
+  TriggerComponent
 } from './triggers/triggerSystem'
 
 import { ActionsSequenceSystem } from './actionsSequenceSystem/actionsSequenceSystem'
@@ -42,4 +43,6 @@ export default {
   ActionsSequenceSystem,
   map,
   clamp,
+  addTestCube,
+  addLabel
 }
