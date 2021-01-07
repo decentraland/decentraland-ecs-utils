@@ -1,3 +1,5 @@
+import { isPreviewMode } from '@decentraland/EnvironmentAPI'
+
 export class TriggerSystem implements ISystem {
   private static _instance: TriggerSystem | null = null
   static get instance(): TriggerSystem {
@@ -388,7 +390,11 @@ class TriggerWrapper {
     return this._isDebug
   }
 
-  addDebugEntity() {
+  async addDebugEntity() {
+    if (await !isPreviewMode()) {
+      return
+    }
+
     if (!TriggerWrapper._debugMaterial) {
       TriggerWrapper._debugMaterial = new Material()
       TriggerWrapper._debugMaterial.alphaTest = 0.5
