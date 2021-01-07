@@ -92,4 +92,6 @@ export function addLabel(
     label.addComponent(new Billboard())
   }
   engine.addEntity(label)
+
+  return label
 }

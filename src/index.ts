@@ -13,6 +13,7 @@ import { ExpireIn } from './timer/component/expire'
 import { Interval } from './timer/component/interval'
 import { map, clamp } from './helpers/helperfunctions'
 import { addTestCube, addLabel } from './helpers/testCube'
+import { sendRequest } from './helpers/requests'
 import {
   TriggerSystem,
   TriggerBoxShape,
@@ -44,5 +45,6 @@ export default {
   map,
   clamp,
   addTestCube,
-  addLabel
+  addLabel,
+  sendRequest
 }
