@@ -28,7 +28,7 @@
   "devDependencies": {
     "decentraland-ecs": "^6.4.4",
     "typescript": "^3.7.4",
-    "semantic-release": "^16.0.1",
+	"semantic-release": ">=17.2.3",
     "prettier": "^1.19.1"
   }
 }
