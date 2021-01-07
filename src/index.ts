@@ -11,7 +11,12 @@ import { ToggleComponent, ToggleState } from './toggle/toggleComponent'
 import { Delay } from './timer/component/delay'
 import { ExpireIn } from './timer/component/expire'
 import { Interval } from './timer/component/interval'
-import { map, clamp } from './helpers/helperfunctions'
+import {
+  map,
+  clamp,
+  getEntityWorldPosition,
+  getEntityWorldRotation
+} from './helpers/helperfunctions'
 import { addTestCube, addLabel } from './helpers/testCube'
 import { sendRequest } from './helpers/requests'
 import {
@@ -46,5 +51,7 @@ export default {
   clamp,
   addTestCube,
   addLabel,
-  sendRequest
+  sendRequest,
+  getEntityWorldPosition,
+  getEntityWorldRotation
 }

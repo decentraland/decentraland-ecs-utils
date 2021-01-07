@@ -40,3 +40,77 @@ export function clamp(value: number, min: number, max: number) {
   }
   return result
 }
+
+/**
+ * Returns the position of an entity that is a child of other entities, relative to the scene instead of relative to the parent. Returns a Vector3.
+ *
+ * @param entity Entity to calculate position
+ *
+ */
+export function getEntityWorldPosition(entity: IEntity): Vector3 {
+  let entityPosition: Vector3 = entity.hasComponent(Transform)
+    ? entity.getComponent(Transform).position.clone()
+    : Vector3.Zero()
+  let parentEntity = entity.getParent()
+
+  if (parentEntity != null) {
+    if (parentEntity.uuid == 'FirstPersonCameraEntityReference') {
+      //log('ATTACHED TO CAMERA')
+      let parentRotation = Camera.instance.rotation.clone()
+      return Camera.instance.position
+        .clone()
+        .add(entityPosition.rotate(parentRotation))
+    } else if (parentEntity.uuid == 'AvatarEntityReference') {
+      //log('ATTACHED TO AVATAR')
+      let camRotation = Camera.instance.rotation
+      let parentRotation = Quaternion.Euler(0, camRotation.eulerAngles.y, 0)
+      //log(Camera.instance.rotation.eulerAngles.y)
+      return Camera.instance.position
+        .clone()
+        .add(entityPosition.rotate(parentRotation))
+        .add(new Vector3(0, -0.875, 0))
+    } else {
+      let parentRotation = parentEntity.hasComponent(Transform)
+        ? parentEntity.getComponent(Transform).rotation
+        : Quaternion.Identity
+      return getEntityWorldPosition(parentEntity).add(
+        entityPosition.rotate(parentRotation)
+      )
+    }
+  }
+  return entityPosition
+}
+
+/**
+ * Returns the position of an entity that is a child of other entities, relative to the scene instead of relative to the parent. Returns a Vector3.
+ *
+ * @param entity Entity to calculate position
+ *
+ */
+export function getEntityWorldRotation(entity: IEntity): Quaternion {
+  let entityRotation: Quaternion = entity.hasComponent(Transform)
+    ? entity.getComponent(Transform).rotation.clone()
+    : Quaternion.Zero()
+  let parentEntity = entity.getParent()
+  if (parentEntity != null) {
+    if (parentEntity.uuid == 'FirstPersonCameraEntityReference') {
+      //log('ATTACHED TO CAMERA')
+      let parentRotation = Camera.instance.rotation.clone()
+      return entityRotation.multiply(parentRotation)
+    } else if (parentEntity.uuid == 'AvatarEntityReference') {
+      //log('ATTACHED TO AVATAR')
+      let parentRotation = Quaternion.Euler(
+        0,
+        Camera.instance.rotation.eulerAngles.y,
+        0
+      )
+      return entityRotation.multiply(parentRotation)
+    } else {
+      let parentRotation = parentEntity.hasComponent(Transform)
+        ? parentEntity.getComponent(Transform).rotation
+        : Quaternion.Identity
+      return entityRotation.multiply(getEntityWorldRotation(parentEntity))
+    }
+  }
+  return entityRotation
+}
