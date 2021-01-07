@@ -17,7 +17,6 @@ export async function addTestCube(
   label?: string,
   color?: Color3,
   sphere?: boolean,
-
   noCollider?: boolean
 ) {
   // if not in preview return
@@ -27,7 +26,7 @@ export async function addTestCube(
 
   let cube = new Entity()
   cube.addComponent(new Transform(pos))
-  if (sphere == true) {
+  if (sphere) {
     cube.addComponent(new SphereShape())
     cube.getComponent(Transform).scale.setAll(0.5)
   } else {
@@ -79,18 +78,18 @@ export function addLabel(
   textOffset?: TranformConstructorArgs
 ) {
   let label = new Entity()
-  label.setParent(parent)
-  if (billboard) {
-    label.addComponent(new Billboard())
-  }
   label.addComponent(
     new Transform(
       textOffset ? textOffset : { position: new Vector3(0, 1.5, 0) }
     )
   )
-  label.addComponent(new TextShape(text))
-  label.getComponent(TextShape).fontSize = size ? size : 3
-  label.getComponent(TextShape).color = color ? color : Color3.Black()
-
+  label.setParent(parent)
+  let textShape = new TextShape(text)
+  textShape.fontSize = size ? size : 3
+  textShape.color = color ? color : Color3.Black()
+  label.addComponent(textShape)
+  if (billboard) {
+    label.addComponent(new Billboard())
+  }
   engine.addEntity(label)
 }
