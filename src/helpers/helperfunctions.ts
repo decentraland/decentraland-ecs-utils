@@ -26,8 +26,8 @@ export function map(
  * Clamps a value so that it doesn't exceed a minimum or a maximum value.
  *
  * @param value input number
- * @param min Minimum value in the range of the output.
- * @param max Maximum value in the range of the output.
+ * @param min Minimum output value.
+ * @param max Maximum output value.
  *
  */
 export function clamp(value: number, min: number, max: number) {

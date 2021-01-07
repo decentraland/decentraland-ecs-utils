@@ -1,7 +1,10 @@
 import { MoveTransformComponent } from './transform/component/move'
 import { RotateTransformComponent } from './transform/component/rotate'
 import { ScaleTransformComponent } from './transform/component/scale'
-import { FollowPathComponent } from './transform/component/followpath'
+import {
+  FollowPathComponent,
+  FollowCurvedPathComponent
+} from './transform/component/followpath'
 import { KeepRotatingComponent } from './transform/component/keeprotating'
 import { TransformSystem } from './transform/system/transfromSystem'
 import { Interpolate, InterpolationType } from './transform/math/interpolation'
@@ -34,6 +37,7 @@ export default {
   RotateTransformComponent,
   ScaleTransformComponent,
   FollowPathComponent,
+  FollowCurvedPathComponent,
   KeepRotatingComponent,
   Interpolate,
   InterpolationType,

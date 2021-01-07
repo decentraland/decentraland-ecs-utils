@@ -17,10 +17,11 @@ export async function addTestCube(
   label?: string,
   color?: Color3,
   sphere?: boolean,
-  noCollider?: boolean
+  noCollider?: boolean,
+  keepInProduction?: boolean
 ) {
   // if not in preview return
-  if (await !isPreviewMode()) {
+  if (!keepInProduction && (await !isPreviewMode())) {
     return
   }
 
@@ -37,7 +38,8 @@ export async function addTestCube(
 
   cube.addComponent(
     new OnPointerDown(triggeredFunction, {
-      hoverText: label ? label : 'click'
+      hoverText: label ? label : 'click',
+      button: ActionButton.POINTER
     })
   )
 
@@ -64,9 +66,9 @@ export async function addTestCube(
  * @param text Text to use on label
  * @param parent Entity to place label on.
  * @param billboard If true, label turns to always face player.
- * @param color Text color.
- * @param size Text font size.
- * @param textOffset Offset from parent entity's position.
+ * @param color Text color. Black by default.
+ * @param size Text font size, 3 by default.
+ * @param textOffset Offset from parent entity's position. By default 1.5 meters above the parent.
  *
  */
 export function addLabel(
