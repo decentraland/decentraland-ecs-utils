@@ -135,7 +135,7 @@ The curved path is composed of multiple straight line segments put together. You
 
 > Tip: Each segment takes at least one frame to complete. Avoid using more than 30 segments per second in the duration of the path, or the entity will move significantly slower while it stops for each segment.
 
-This example moves an entity over through a curve that covers four points:
+This example moves an entity over through a curve that's subdivided into 40 segments, over a period of 5 seconds. The curve passes through four key points.
 
 ```ts
 import utils from '../node_modules/decentraland-ecs-utils/index'
