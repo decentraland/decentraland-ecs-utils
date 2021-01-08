@@ -1,5 +1,5 @@
 /**
- * Quick function to add a cube that can run functions when clicked. By default only displayed when in preview mode for tests.
+ * Quick function to send HTTP requests to an external address
  *
  * @param url URL to send request to
  * @param method HTTP method (GET by default)
@@ -8,29 +8,31 @@
  *
  */
 export async function sendRequest(
-  url: string,
-  method?: string,
-  headers?: any,
-  body?: any
-) {
-  try {
-    let propsObject = {
-      method: method ? method : 'GET'
-    }
+	url: string,
+	method?: string,
+	headers?: any,
+	body?: any
+  ) {
 
-    if (headers) {
-      propsObject[headers] = headers
-    }
+	try {
 
-    if (body) {
-      propsObject[body] = JSON.stringify(body)
-    }
+		let propsObject = {
+			method: method? method: 'GET',
+		}
 
-    let response = await fetch(url, propsObject)
-    let json = await response.json()
-    //log(json)
-    return json
-  } catch {
-    log('error fetching from server ', url)
-  }
-}
+		if(headers){
+			propsObject[`headers`] = headers
+		}
+
+		if(body){
+			propsObject[`body`] = JSON.stringify(body)
+		}
+
+		let response = await fetch(url, propsObject )
+		let json = await response.json()
+		//log(json)
+		return json
+	  } catch (error) {
+		log('error fetching from ', url, error)
+	  }
+	}
