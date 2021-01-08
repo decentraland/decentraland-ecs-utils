@@ -837,7 +837,7 @@ async function request() {
 }
 ```
 
-> NOTE: The sendRequest() function is asynchronous. To access its response, you must use it within an `async` block, together with an `await`.
+> NOTE: The sendRequest() function is asynchronous, since it must wait for the external server to respond back before it can return a response. If you need your code to access the data on the request's response, you must use the sendRequest() within an `async` block of code, and add an `await` to the function.
 
 The `sendRequest()` function also lets you use the following arguments, for sending more advanced requests:
 
@@ -870,20 +870,21 @@ The `addLabel()` function has just two required arguments:
 
 ```ts
 const cube = new Entity()
-cube.addComponent(new Transform({ position: new Vector3(8, 1, 8) }))cube.addComponent(new BoxShape())
+cube.addComponent(new Transform({ position: new Vector3(8, 1, 8) }))
+cube.addComponent(new BoxShape())
 engine.addEntity(cube)
 
-utils.addLabel('random cube', cube)
+utils.addLabel('Random Cube', cube)
 ```
 
 The `addLabel()` function also lets you set the following:
 
-- `billboard`: If true, label turns to always face player.
+- `billboard`: If true, label turns to always face player. True by default.
 - `color`: Text color. Black by default.
 - `size`: Text font size, 3 by default.
 - `textOffset`: Offset from parent entity's position. By default 1.5 meters above the parent.
 
-> Tip: The `addLabel()` function returns the created entity, that you can then tweak in any way you choose.
+> Tip: The `addLabel()` function returns the created entity used for the text. You can then tweak this entity in any way you choose.
 
 ## Debug helpers
 
@@ -899,9 +900,12 @@ The `addTestCube()` function has just two required arguments:
 - `triggeredFunction`: A function that gets called every time the cube is clicked.
 
 ```ts
-myCube = await utils.addTestCube({ position: new Vector3(0, 0, 1) }, () => {
-  log('Cube clicked')
-})
+utils.addTestCube(
+  { position: new Vector3(2, 1, 2) }, 
+  () => {
+    log('Cube clicked')
+  }
+)
 ```
 
 The `addTestCube()` function also lets you set the following:
@@ -912,7 +916,15 @@ The `addTestCube()` function also lets you set the following:
 - `noCollider`: If true, the cube won't have a collider and will let players walk through it.
 - `keepInProduction`: If true, it will be visible for players in-world once the scene is deployed. Otherwise, the cube is only present when previewing he scene locally.
 
-> Tip: The `addTestCube()` function returns the created entity, that you can then tweak in any way you choose.
+> Tip: The `addTestCube()` function returns the created entity for the cube. You can then tweak this entity in any way you choose. `addTestCube()` is an async function (because the function first checks if you're in preview or in production). If you need the function to return the cube (instead of a promise of a cube) use it inside an async block of code with an await on the `addTestCube()` function. 
+
+```ts
+async function addMyCube(){
+  myCube = await utils.addTestCube({ position: new Vector3(0, 0, 1) }, () => {
+    log('Cube clicked')
+  })
+}
+```
 
 ## Action sequence
 
