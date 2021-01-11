@@ -2,7 +2,7 @@ import { ITransformComponent } from '../component/itransformcomponent'
 import { MoveTransformComponent } from '../component/move'
 import { RotateTransformComponent } from '../component/rotate'
 import { ScaleTransformComponent } from '../component/scale'
-import { FollowPathComponent } from '../component/followpath'
+import { FollowPathComponent, FollowCurvedPathComponent } from '../component/followpath'
 import { KeepRotatingComponent } from '../component/keeprotating'
 
 export class TransformSystem implements ISystem {
