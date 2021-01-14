@@ -29,9 +29,12 @@ export async function sendRequest(
 		}
 
 		let response = await fetch(url, propsObject )
-		let json = await response.json()
-		//log(json)
-		return json
+		try{
+			let json = await response.json()
+			return json
+		} catch {
+			return response
+		}
 	  } catch (error) {
 		log('error fetching from ', url, error)
 	  }
