@@ -38,15 +38,15 @@ export class FollowPathComponent implements ITransformComponent {
     }
 
     if (duration > 0) {
-      let sqTotalDist = 0
-      let sqPointsDist = []
+      let totalDist = 0
+      let pointsDist = []
       for (let i = 0; i < points.length - 1; i++) {
-        let sqDist = Vector3.DistanceSquared(points[i], points[i + 1])
-        sqTotalDist += sqDist
-        sqPointsDist.push(sqDist)
+        let sqDist = Vector3.Distance(points[i], points[i + 1])
+        totalDist += sqDist
+        pointsDist.push(sqDist)
       }
-      for (let i = 0; i < sqPointsDist.length; i++) {
-        this.speed.push(1 / ((sqPointsDist[i] / sqTotalDist) * duration))
+      for (let i = 0; i < pointsDist.length; i++) {
+        this.speed.push(1 / ((pointsDist[i] / totalDist) * duration))
       }
     } else {
       this.normalizedTime = 1
@@ -103,7 +103,7 @@ export class FollowCurvedPathComponent implements ITransformComponent {
   private speed: number[] = []
   private normalizedTime: number
   private currentIndex: number
-  private turnToFaceNext: boolean
+  private turnToFaceNext: boolean = false
   private facingNext: boolean = false
 
   onFinishCallback?: () => void
@@ -133,22 +133,22 @@ export class FollowCurvedPathComponent implements ITransformComponent {
       closedCircle ? true : false
     ).getPoints()
     this.onFinishCallback = onFinishCallback
-    this.turnToFaceNext = turnToFaceNext
+    this.turnToFaceNext = turnToFaceNext ? turnToFaceNext : false
 
     if (this.points.length < 2) {
       throw new Error('At least 2 points are needed for FollowPathComponent.')
     }
 
     if (duration > 0) {
-      let sqTotalDist = 0
-      let sqPointsDist = []
+      let totalDist = 0
+      let pointsDist = []
       for (let i = 0; i < this.points.length - 1; i++) {
-        let sqDist = Vector3.DistanceSquared(this.points[i], this.points[i + 1])
-        sqTotalDist += sqDist
-        sqPointsDist.push(sqDist)
+        let sqDist = Vector3.Distance(this.points[i], this.points[i + 1])
+        totalDist += sqDist
+        pointsDist.push(sqDist)
       }
-      for (let i = 0; i < sqPointsDist.length; i++) {
-        this.speed.push(1 / ((sqPointsDist[i] / sqTotalDist) * duration))
+      for (let i = 0; i < pointsDist.length; i++) {
+        this.speed.push(1 / ((pointsDist[i] / totalDist) * duration))
       }
     } else {
       this.normalizedTime = 1
