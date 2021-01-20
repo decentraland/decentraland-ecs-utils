@@ -8,34 +8,38 @@
  *
  */
 export async function sendRequest(
-	url: string,
-	method?: string,
-	headers?: any,
-	body?: any
-  ) {
+  url: string,
+  method?: string,
+  headers?: any,
+  body?: any
+) {
+  try {
+    let propsObject: requestData = {
+      method: method ? method : 'GET'
+    }
 
-	try {
+    if (headers) {
+      propsObject.headers = headers
+    }
 
-		let propsObject = {
-			method: method? method: 'GET',
-		}
+    if (body) {
+      propsObject.body = JSON.stringify(body)
+    }
 
-		if(headers){
-			propsObject[`headers`] = headers
-		}
+    let response = await fetch(url, propsObject)
+    try {
+      let json = await response.json()
+      return json
+    } catch {
+      return response
+    }
+  } catch (error) {
+    log('error fetching from ', url, ' : ', error)
+  }
+}
 
-		if(body){
-			propsObject[`body`] = JSON.stringify(body)
-		}
-
-		let response = await fetch(url, propsObject )
-		try{
-			let json = await response.json()
-			return json
-		} catch {
-			return response
-		}
-	  } catch (error) {
-		log('error fetching from ', url, error)
-	  }
-	}
+export type requestData = {
+  method: string
+  headers?: any
+  body?: string
+}
