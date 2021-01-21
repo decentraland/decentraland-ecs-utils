@@ -559,7 +559,6 @@ export class TriggerComponent {
    *
    * @param {TriggerBoxShape | TriggerSphereShape} shape shape of the triggering collider area
    * @param {TriggerData} data An object with additional parameters for the trigger component
-
    */
   constructor(shape: TriggerBoxShape | TriggerSphereShape, data?: TriggerData) {
     TriggerSystem.createAndAddToEngine()
@@ -576,6 +575,11 @@ export class TriggerComponent {
   }
 }
 
+/**
+ * Define a box-shaped area for using on a TriggerComponent
+ * @param {Vector3} size The scale of the box area
+ * @param {Vector3} position The offset from the position of the entity that owns the TriggerComponent
+ */
 export class TriggerBoxShape {
   size: Vector3
   position: Vector3
@@ -586,6 +590,11 @@ export class TriggerBoxShape {
   }
 }
 
+/**
+ * Define a sphere-shaped area for using on a TriggerComponent
+ * @param {number} radius The radius of the sphere area
+ * @param {Vector3} position The offset from the position of the entity that owns the TriggerComponent
+ */
 export class TriggerSphereShape {
   radius: number
   position: Vector3
