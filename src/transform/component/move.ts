@@ -18,11 +18,11 @@ export class MoveTransformComponent implements ITransformComponent {
 
   /**
    * Create a MoveTransformComponent instance to add as a component to a Entity
-   * @param start starting position
-   * @param end ending position
-   * @param duration duration (in seconds) of start to end translation
-   * @param onFinishCallback called when translation ends
-   * @param interpolationType type of interpolation to be used (default: LINEAR)
+   * @param {ReadOnlyVector3} start starting position
+   * @param {ReadOnlyVector3} end ending position
+   * @param {number} duration duration (in seconds) of start to end translation
+   * @param {()=>void} onFinishCallback called when translation ends
+   * @param {InterpolationType} interpolationType type of interpolation to be used (default: LINEAR)
    */
   constructor(
     start: ReadOnlyVector3,

@@ -1,11 +1,12 @@
 /**
  * Maps a value from one range of values to its equivalent, scaled in proportion to another range of values, using maximum and minimum.
  *
- * @param value input number
- * @param min1 Minimum value in the range of the input.
- * @param max1 Maximum value in the range of the input.
- * @param min2 Minimum value in the range of the output.
- * @param max2 Maximum value in the range of the output.
+ * @param {number} value input number
+ * @param {number} min1 Minimum value in the range of the input.
+ * @param {number} max1 Maximum value in the range of the input.
+ * @param {number} min2 Minimum value in the range of the output.
+ * @param {number} max2 Maximum value in the range of the output.
+ * @return {number} The resulting mapped value between the new min and max
  *
  */
 export function map(
@@ -25,9 +26,10 @@ export function map(
 /**
  * Clamps a value so that it doesn't exceed a minimum or a maximum value.
  *
- * @param value input number
- * @param min Minimum output value.
- * @param max Maximum output value.
+ * @param {number} value input number
+ * @param {number} min Minimum output value.
+ * @param {number} max Maximum output value.
+ * @return {number} The resulting mapped value between the min and max
  *
  */
 export function clamp(value: number, min: number, max: number) {
@@ -44,7 +46,8 @@ export function clamp(value: number, min: number, max: number) {
 /**
  * Returns the position of an entity that is a child of other entities, relative to the scene instead of relative to the parent. Returns a Vector3.
  *
- * @param entity Entity to calculate position
+ * @param {Entity} entity Entity to calculate position
+ * @return {Vector3} The Entity's global position in reference to the scene's origin
  *
  */
 export function getEntityWorldPosition(entity: IEntity): Vector3 {
@@ -84,7 +87,8 @@ export function getEntityWorldPosition(entity: IEntity): Vector3 {
 /**
  * Returns the position of an entity that is a child of other entities, relative to the scene instead of relative to the parent. Returns a Vector3.
  *
- * @param entity Entity to calculate position
+ * @param {Entity} entity Entity to calculate position
+ * @return {Quaternion} The Entity's global rotation in reference to the scene's origin
  *
  */
 export function getEntityWorldRotation(entity: IEntity): Quaternion {
@@ -106,9 +110,9 @@ export function getEntityWorldRotation(entity: IEntity): Quaternion {
       )
       return entityRotation.multiply(parentRotation)
     } else {
-      let parentRotation = parentEntity.hasComponent(Transform)
-        ? parentEntity.getComponent(Transform).rotation
-        : Quaternion.Identity
+      //   let parentRotation = parentEntity.hasComponent(Transform)
+      //     ? parentEntity.getComponent(Transform).rotation
+      //     : Quaternion.Identity
       return entityRotation.multiply(getEntityWorldRotation(parentEntity))
     }
   }

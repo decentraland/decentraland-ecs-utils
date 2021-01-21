@@ -532,12 +532,16 @@ The trigger component can execute whatever you want whenever the player's positi
 The `TriggerComponent` has the following arguments:
 
 - `shape`: Shape of the triggering collider area, either a cube or a sphere (`TriggerBoxShape` or `TriggerSphereShape`)
+- `data`: An object of type `TriggerData` containing several optional parameters to configure the behavior of the trigger area.
+
+The `TriggerData` type may contain the following parameters:
+
+- `onCameraEnter`: Callback function for when the player enters the trigger area
+- `onCameraExit`: Callback function for when the player leaves the trigger area
 - `layer`: Layer of the Trigger, useful to discriminate between trigger events. You can set multiple layers by using a `|` symbol.
 - `triggeredByLayer`: Against which layers to check collisions
 - `onTriggerEnter`: Callback when an entity of a valid layer enters the trigger area
 - `onTriggerExit`: Callback function for when an entity of a valid layer leaves the trigger area
-- `onCameraEnter`: Callback function for when the player enters the trigger area
-- `onCameraExit`: Callback function for when the player leaves the trigger area
 - `enableDebug`: When true, makes the trigger area visible for debug purposes. Only visible when running a preview locally, not in production.
 
 The following example creates a trigger that changes its position randomly when triggered by the player.
@@ -562,20 +566,16 @@ let triggerBox = new utils.TriggerBoxShape(Vector3.One(), Vector3.Zero())
 box.addComponent(
   new utils.TriggerComponent(
     triggerBox, //shape
-    0, //layer
-    0, //triggeredByLayer
-    null, //onTriggerEnter
-    null, //onTriggerExit
-    () => {
-      //onCameraEnter
-      log('triggered!')
-      box.getComponent(Transform).position = new Vector3(
-        1 + Math.random() * 14,
-        0,
-        1 + Math.random() * 14
-      )
-    },
-    null //onCameraExit
+    onCameraEnter : {
+		() => {
+			log('triggered!')
+			box.getComponent(Transform).position = new Vector3(
+				1 + Math.random() * 14,
+				0,
+				1 + Math.random() * 14
+			)
+		}
+	}
   )
 )
 
@@ -605,6 +605,8 @@ utils.TriggerSystem.instance.setCameraTriggerShape(
   )
 )
 ```
+
+Changing this configuration affects the behavior of all `onCameraEnter` and `onCameraExit` functions of all TriggerComponents in the scene.
 
 ### Trigger layers
 
@@ -640,33 +642,33 @@ food.addComponent(
     position: new Vector3(1 + Math.random() * 14, 0, 1 + Math.random() * 14)
   })
 )
-food.addComponent(
-  new utils.TriggerComponent(
-    triggerBox,
-    foodLayer,
-    mouseLayer | catLayer,
-    () => {
-      food.getComponent(Transform).position = new Vector3(
-        1 + Math.random() * 14,
-        0,
-        1 + Math.random() * 14
-      )
-      mouse.addComponentOrReplace(
-        new utils.MoveTransformComponent(
-          mouse.getComponent(Transform).position,
-          food.getComponent(Transform).position,
-          4
-        )
-      )
-      cat.addComponentOrReplace(
-        new utils.MoveTransformComponent(
-          cat.getComponent(Transform).position,
-          food.getComponent(Transform).position,
-          4
-        )
-      )
-    }
-  )
+food.addComponent(new utils.TriggerComponent(
+	triggerBox,
+	{
+		layer: foodLayer
+		triggeredByLayer: mouseLayer | catLayer
+		onTriggerEnter: () => {
+			food.getComponent(Transform).position = new Vector3(
+				1 + Math.random() * 14,
+				0,
+				1 + Math.random() * 14
+			)
+			mouse.addComponentOrReplace(
+				new utils.MoveTransformComponent(
+				mouse.getComponent(Transform).position,
+				food.getComponent(Transform).position,
+				4
+				)
+			)
+			cat.addComponentOrReplace(
+				new utils.MoveTransformComponent(
+				cat.getComponent(Transform).position,
+				food.getComponent(Transform).position,
+				4
+				)
+			)
+		}
+	})
 )
 
 //create mouse
@@ -679,21 +681,26 @@ mouse.addComponent(
     scale: new Vector3(0.5, 0.5, 0.5)
   })
 )
-mouse.addComponent(
-  new utils.TriggerComponent(triggerBox, mouseLayer, catLayer, () => {
-    mouse.getComponent(Transform).position = new Vector3(
-      1 + Math.random() * 14,
-      0,
-      1 + Math.random() * 14
-    )
-    mouse.addComponentOrReplace(
-      new utils.MoveTransformComponent(
-        mouse.getComponent(Transform).position,
-        food.getComponent(Transform).position,
-        4
-      )
-    )
-  })
+mouse.addComponent(new utils.TriggerComponent(
+	triggerBox,
+	{
+		layer: mouseLayer
+		triggeredByLayer: catLayer
+		onTriggerEnter: () => {
+		mouse.getComponent(Transform).position = new Vector3(
+		1 + Math.random() * 14,
+		0,
+		1 + Math.random() * 14
+		)
+		mouse.addComponentOrReplace(
+			new utils.MoveTransformComponent(
+			mouse.getComponent(Transform).position,
+			food.getComponent(Transform).position,
+			4
+			)
+		)
+		}
+	})
 )
 
 //create cat
@@ -705,7 +712,12 @@ cat.addComponent(
     position: new Vector3(1 + Math.random() * 14, 0, 1 + Math.random() * 14)
   })
 )
-cat.addComponent(new utils.TriggerComponent(triggerBox, catLayer))
+cat.addComponent(new utils.TriggerComponen(
+	triggerBox,
+	{
+		layer: catLayer
+	})
+)
 
 //set initial movement for mouse and cat
 mouse.addComponentOrReplace(
@@ -900,12 +912,9 @@ The `addTestCube()` function has just two required arguments:
 - `triggeredFunction`: A function that gets called every time the cube is clicked.
 
 ```ts
-utils.addTestCube(
-  { position: new Vector3(2, 1, 2) }, 
-  () => {
-    log('Cube clicked')
-  }
-)
+utils.addTestCube({ position: new Vector3(2, 1, 2) }, () => {
+  log('Cube clicked')
+})
 ```
 
 The `addTestCube()` function also lets you set the following:
@@ -916,10 +925,10 @@ The `addTestCube()` function also lets you set the following:
 - `noCollider`: If true, the cube won't have a collider and will let players walk through it.
 - `keepInProduction`: If true, it will be visible for players in-world once the scene is deployed. Otherwise, the cube is only present when previewing he scene locally.
 
-> Tip: The `addTestCube()` function returns the created entity for the cube. You can then tweak this entity in any way you choose. `addTestCube()` is an async function (because the function first checks if you're in preview or in production). If you need the function to return the cube (instead of a promise of a cube) use it inside an async block of code with an await on the `addTestCube()` function. 
+> Tip: The `addTestCube()` function returns the created entity for the cube. You can then tweak this entity in any way you choose. `addTestCube()` is an async function (because the function first checks if you're in preview or in production). If you need the function to return the cube (instead of a promise of a cube) use it inside an async block of code with an await on the `addTestCube()` function.
 
 ```ts
-async function addMyCube(){
+async function addMyCube() {
   myCube = await utils.addTestCube({ position: new Vector3(0, 0, 1) }, () => {
     log('Cube clicked')
   })

@@ -1,10 +1,11 @@
 /**
  * Quick function to send HTTP requests to an external address
  *
- * @param url URL to send request to
- * @param method HTTP method (GET by default)
- * @param headers Headers to add to request, as a JSON with key/value pairs per each header
- * @param body Body to add to request, as a JSON object
+ * @param {string} url URL to send request to
+ * @param {string} method HTTP method (GET by default)
+ * @param {*} headers Headers to add to request, as a JSON with key/value pairs per each header
+ * @param {*} body Body to add to request, as a JSON object
+ * @return {*} The response of the request. If the response is a JSON object, it will be parsed.
  *
  */
 export async function sendRequest(
@@ -38,6 +39,15 @@ export async function sendRequest(
   }
 }
 
+/**
+ * Data to construct an HTTP Request
+ *
+ * @typedef {Object} requestData
+ * @property {string} method The HTTP method (GET, POST, DELETE, PUT, etc)
+ * @property {any} headers An object with optional headers to send with the request
+ * @property {string} body A stringified JSON to use as a body on a request
+ *
+ */
 export type requestData = {
   method: string
   headers?: any

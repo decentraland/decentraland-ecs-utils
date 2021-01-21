@@ -3,12 +3,13 @@ import { isPreviewMode } from '@decentraland/EnvironmentAPI'
 /**
  * Quick function to add a cube that can run functions when clicked. By default only displayed when in preview mode for tests.
  *
- * @param pos Transform arguments for the cube, including position, scale and rotation
- * @param triggeredFunction Function to execute every time the cube is clicked.
- * @param label Text to display over cube and on hover.
- * @param color Cube color.
- * @param sphere If true, use a sphere shape instead of cube.
- * @param noCollider If true, cube has no collider.
+ * @param {TranformConstructorArgs} pos Transform arguments for the cube, including position, scale and rotation
+ * @param {() => void} triggeredFunction Function to execute every time the cube is clicked.
+ * @param {string} label Text to display over cube and on hover.
+ * @param {Color3} color Cube color.
+ * @param {boolean} sphere If true, use a sphere shape instead of cube.
+ * @param {boolean} noCollider If true, cube has no collider.
+ * @return {Entity} A new entity with the configured settings and a label as a child
  *
  */
 export async function addTestCube(
@@ -63,12 +64,13 @@ export async function addTestCube(
 /**
  * Maps a value from one range of values to its equivalent, scaled in proportion to another range of values, using maximum and minimum.
  *
- * @param text Text to use on label
- * @param parent Entity to place label on.
- * @param billboard If true, label turns to always face player.
- * @param color Text color. Black by default.
- * @param size Text font size, 3 by default.
- * @param textOffset Offset from parent entity's position. By default 1.5 meters above the parent.
+ * @param {string} text Text to use on label
+ * @param {Entity} parent Entity to place label on.
+ * @param {boolean} billboard If true, label turns to always face player.
+ * @param {Color3} color Text color. Black by default.
+ * @param {number} size Text font size, 3 by default.
+ * @param {TranformConstructorArgs} textOffset Offset from parent entity's position. By default 1.5 meters above the parent.
+ * @return {Entity} A new entity with the configured settings that is a child of the provided parent
  *
  */
 export function addLabel(

@@ -1,5 +1,26 @@
 import { isPreviewMode } from '@decentraland/EnvironmentAPI'
 
+/**
+ *
+ * @typedef {Object} TriggerData - Object with data for a NPCTriggerComponent
+ * @property {number} layer  layer of the Trigger, useful to discriminate between trigger events. You can set multiple layers by using a | symbol.
+ * @property {number} triggeredByLayer against which layers to check collisions
+ * @property {(entity: Entity) => void } onTriggerEnter callback when an entity of a valid layer enters the trigger area
+ * @property {(entity: Entity) => void} onTriggerExit callback when an entity of a valid layer leaves the trigger area
+ * @property {() => void} onCameraEnter callback when the player enters the trigger area
+ * @property {() => void} onCameraExit callback when the player leaves the trigger area
+ * @property {boolean} enableDebug when true makes the trigger area visible for debug purposes.
+ */
+export type TriggerData = {
+  layer?: number
+  triggeredByLayer?: number
+  onTriggerEnter?: (entity: Entity) => void
+  onTriggerExit?: (entity: Entity) => void
+  onCameraEnter?: () => void
+  onCameraExit?: () => void
+  enableDebug?: boolean
+}
+
 export class TriggerSystem implements ISystem {
   private static _instance: TriggerSystem | null = null
   static get instance(): TriggerSystem {
@@ -29,7 +50,7 @@ export class TriggerSystem implements ISystem {
 
   /**
    * set a custom trigger's shape for the camera
-   * @param shape custom trigger's shape
+   * @param {TriggerBoxShape | TriggerSphereShape} shape custom trigger's shape
    */
   setCameraTriggerShape(shape: TriggerBoxShape | TriggerSphereShape) {
     this._cameraTriggerWrapper.setShape(shape)
@@ -494,7 +515,7 @@ class CameraTrigger extends TriggerWrapper {
 @Component('triggerComponent')
 export class TriggerComponent {
   /**
-   * is trigger enable?
+   * Is the trigger enabled? If false, the associated functions aren't triggered.
    */
   enabled: boolean = true
   /**
@@ -532,38 +553,26 @@ export class TriggerComponent {
     return this._debugEnabled
   }
 
-  private _debugEnabled: boolean
+  private _debugEnabled: boolean = false
 
   /**
    *
-   * @param shape shape of the triggering collider area
-   * @param layer layer of the Trigger, useful to discriminate between trigger events. You can set multiple layers by using a | symbol.
-   * @param triggeredByLayer against which layers to check collisions
-   * @param onTriggerEnter callback when an entity of a valid layer enters the trigger area
-   * @param onTriggerExit callback when an entity of a valid layer leaves the trigger area
-   * @param onCameraEnter callback when the player enters the trigger area
-   * @param onCameraExit callback when the player leaves the trigger area
-   * @param enableDebug when true makes the trigger area visible for debug purposes.
+   * @param {TriggerBoxShape | TriggerSphereShape} shape shape of the triggering collider area
+   * @param {TriggerData} data An object with additional parameters for the trigger component
+
    */
-  constructor(
-    shape: TriggerBoxShape | TriggerSphereShape,
-    layer: number = 0,
-    triggeredByLayer: number = 0,
-    onTriggerEnter?: (entity: Entity) => void,
-    onTriggerExit?: (entity: Entity) => void,
-    onCameraEnter?: () => void,
-    onCameraExit?: () => void,
-    enableDebug: boolean = false
-  ) {
+  constructor(shape: TriggerBoxShape | TriggerSphereShape, data?: TriggerData) {
     TriggerSystem.createAndAddToEngine()
     this.shape = shape
-    this.layer = layer
-    this.triggeredByLayer = triggeredByLayer
-    this.onTriggerEnter = onTriggerEnter
-    this.onTriggerExit = onTriggerExit
-    this.onCameraEnter = onCameraEnter
-    this.onCameraExit = onCameraExit
-    this._debugEnabled = enableDebug
+    if (data) {
+      if (data.layer) this.layer = data.layer
+      if (data.triggeredByLayer) this.triggeredByLayer = data.triggeredByLayer
+      if (data.onTriggerEnter) this.onTriggerEnter = data.onTriggerEnter
+      if (data.onTriggerExit) this.onTriggerExit = data.onTriggerExit
+      if (data.onCameraEnter) this.onCameraEnter = data.onCameraEnter
+      if (data.onCameraExit) this.onCameraExit = data.onCameraExit
+      if (data.enableDebug) this._debugEnabled = data.enableDebug
+    }
   }
 }
 

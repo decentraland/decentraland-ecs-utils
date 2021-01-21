@@ -13,8 +13,8 @@ export class ExpireIn implements ITimerComponent {
   private onTimeReachedCallback?: () => void
 
   /**
-   * @param millisecs amount of time in milliseconds
-   * @param onTimeReachedCallback callback for when time is reached
+   * @param {number} millisecs amount of time in milliseconds
+   * @param {() => void} onTimeReachedCallback callback for when time is reached
    */
   constructor(millisecs: number, onTimeReachedCallback?: () => void) {
     TimerSystem.createAndAddToEngine()

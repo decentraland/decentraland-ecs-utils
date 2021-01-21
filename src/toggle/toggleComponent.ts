@@ -15,8 +15,8 @@ export class ToggleComponent {
 
   /**
    * Create an instance of a ToggleComponent
-   * @param startingState starting state of the toggle (ON or OFF)
-   * @param onValueChangedCallback called when toggle state changed
+   * @param {ToggleState} startingState starting state of the toggle (ON or OFF)
+   * @param {(value: ToggleState) => void} onValueChangedCallback called when toggle state changed
    */
   constructor(
     startingState: ToggleState = ToggleState.On,
@@ -28,7 +28,7 @@ export class ToggleComponent {
 
   /**
    * Set trigger to a state
-   * @param state new state
+   * @param {ToggleState} state new state
    */
   public set(state: ToggleState): void {
     this.state = state
@@ -45,7 +45,8 @@ export class ToggleComponent {
   }
 
   /**
-   * Get if current toggle state is ON
+   * Get if the current toggle state is ON
+   * @return {boolean}
    */
   public isOn(): boolean {
     return this.state == ToggleState.On
@@ -53,7 +54,7 @@ export class ToggleComponent {
 
   /**
    * Set callback for when ToggleComponent state changed
-   * @param onValueChangedCallback callback
+   * @param {(value: ToggleState) => void} onValueChangedCallback callback
    */
   public setCallback(
     onValueChangedCallback: (value: ToggleState) => void

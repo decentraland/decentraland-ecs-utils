@@ -18,11 +18,11 @@ export class ScaleTransformComponent implements ITransformComponent {
 
   /**
    * Create a ScaleTransformComponent instance to add as a component to a Entity
-   * @param start starting scale
-   * @param end ending scale
-   * @param duration duration (in seconds) of start to end scaling
-   * @param onFinishCallback called when scaling ends
-   * @param interpolationType type of interpolation to be used (default: LINEAR)
+   * @param {ReadOnlyVector3} start starting scale
+   * @param {ReadOnlyVector3} end ending scale
+   * @param {number} duration duration (in seconds) of start to end scaling
+   * @param {() => void} onFinishCallback called when scaling ends
+   * @param {InterpolationType} interpolationType type of interpolation to be used (default: LINEAR)
    */
   constructor(
     start: ReadOnlyVector3,
