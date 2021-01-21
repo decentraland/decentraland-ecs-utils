@@ -560,7 +560,7 @@ box.getComponent(BoxShape).withCollisions = false
 box.addComponent(new Transform({ position: new Vector3(2, 0, 2) }))
 
 // create trigger area object, setting size and relative position
-let triggerBox = new utils.TriggerBoxShape(Vector3.One(), Vector3.Zero())
+let triggerBox = new utils.TriggerBoxShape()
 
 //create trigger for entity
 box.addComponent(
@@ -584,6 +584,10 @@ engine.addEntity(box)
 ```
 
 > Note: The trigger shape can be positioned or stretched, but it can't be rotated on any axis. This is a design decision taken for performance reasons. To cover a slanted area, we recommend adding multiple triggers if applicable.
+
+Each trigger area has a shape for its area to check for collisions, which is completely independent of the visible shape of the entity. The shape of the area can either be determined by a `TriggerBoxShape` or a `TriggerSphereShape`. When instancing these, can set the scale and an offset position. By default, the trigger shape starts in the same position as the entity that has the `TriggerComponent`.
+
+You can check where exactly the trigger area is and its scale by setting the `enableDebug` flag to true. You will then see this shape in the scene when running a preview. This debug shape is only visible in the context of a preview, not once the scene is deployed.
 
 ### Dissable a collision component
 
