@@ -580,9 +580,9 @@ export class TriggerBoxShape {
   size: Vector3
   position: Vector3
 
-  constructor(size: Vector3, position: Vector3) {
-    this.size = size
-    this.position = position
+  constructor(size?: Vector3, position?: Vector3) {
+    this.size = size ? size : Vector3.One().scale(2)
+    this.position = position ? position : Vector3.Zero()
   }
 }
 
@@ -590,8 +590,8 @@ export class TriggerSphereShape {
   radius: number
   position: Vector3
 
-  constructor(radius: number, position: Vector3) {
-    this.radius = radius
-    this.position = position
+  constructor(radius?: number, position?: Vector3) {
+    this.radius = radius ? radius : 2
+    this.position = position ? position : Vector3.Zero()
   }
 }
