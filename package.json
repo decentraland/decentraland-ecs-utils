@@ -1,8 +1,10 @@
 {
-  "name": "decentraland-ecs-utils",
+  "name": "@dcl/ecs-scene-utils",
   "version": "0.0.0-development",
   "description": "A collection of helpers to make it easier to build a Decentraland scene using the SDK.",
-  "main": "index.ts",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "decentralandLibrary": {},
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
     "make": "cp -r src dist && cp package.json dist/package.json && cp LICENSE dist/LICENSE && cp README.md dist/README.md",
@@ -42,5 +44,8 @@
     "branches": [
       "main"
     ]
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }

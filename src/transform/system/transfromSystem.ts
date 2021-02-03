@@ -1,15 +1,7 @@
 import { ITransformComponent } from '../component/itransformcomponent'
-import { MoveTransformComponent } from '../component/move'
-import { RotateTransformComponent } from '../component/rotate'
-import { ScaleTransformComponent } from '../component/scale'
-import {
-  FollowPathComponent,
-  FollowCurvedPathComponent
-} from '../component/followpath'
-import { KeepRotatingComponent } from '../component/keeprotating'
 
 export class TransformSystem implements ISystem {
-  private static _instance: TransformSystem | null = null
+  public static _instance: TransformSystem | null = null
 
   private _components: ComponentConstructor<ITransformComponent>[] = []
   private _componentGroups: ComponentGroup[] = []
@@ -28,37 +20,20 @@ export class TransformSystem implements ISystem {
     this.createAndAddToEngine()._components.push(component)
   }
 
+  public addComponentType(
+    component: ComponentConstructor<ITransformComponent>
+  ) {
+    for (let comp of this._components) {
+      if (component == comp) {
+        return
+      }
+    }
+    this._components.push(component)
+    this._componentGroups.push(engine.getComponentGroup(component, Transform))
+  }
+
   private constructor() {
     TransformSystem._instance = this
-    this._components.push(MoveTransformComponent)
-    this._componentGroups.push(
-      engine.getComponentGroup(MoveTransformComponent, Transform)
-    )
-
-    this._components.push(RotateTransformComponent)
-    this._componentGroups.push(
-      engine.getComponentGroup(RotateTransformComponent, Transform)
-    )
-
-    this._components.push(ScaleTransformComponent)
-    this._componentGroups.push(
-      engine.getComponentGroup(ScaleTransformComponent, Transform)
-    )
-
-    this._components.push(FollowPathComponent)
-    this._componentGroups.push(
-      engine.getComponentGroup(FollowPathComponent, Transform)
-    )
-
-    this._components.push(FollowCurvedPathComponent)
-    this._componentGroups.push(
-      engine.getComponentGroup(FollowCurvedPathComponent, Transform)
-    )
-
-    this._components.push(KeepRotatingComponent)
-    this._componentGroups.push(
-      engine.getComponentGroup(KeepRotatingComponent, Transform)
-    )
   }
 
   update(dt: number) {

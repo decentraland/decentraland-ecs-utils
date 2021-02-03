@@ -11,11 +11,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Build library
-          command: npm run make
-      - run:
           name: Install dependencies
-          command: cd dist && npm i
+          command: npm install
+      - run:
+          name: Build lib
+          command: npm run build
       - run:
           name: Semantic release
           command: cd dist && npm run semantic-release

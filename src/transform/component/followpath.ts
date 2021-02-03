@@ -53,7 +53,8 @@ export class FollowPathComponent implements ITransformComponent {
       this.currentIndex = points.length - 2
     }
 
-    TransformSystem.createAndAddToEngine()
+    let instance = TransformSystem.createAndAddToEngine()
+    instance.addComponentType(FollowPathComponent)
   }
 
   update(dt: number) {
@@ -155,7 +156,8 @@ export class FollowCurvedPathComponent implements ITransformComponent {
       this.currentIndex = points.length - 2
     }
 
-    TransformSystem.createAndAddToEngine()
+    let instance = TransformSystem.createAndAddToEngine()
+    instance.addComponentType(FollowCurvedPathComponent)
   }
 
   update(dt: number) {
