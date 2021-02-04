@@ -34,10 +34,10 @@ export default {
     {
       file: './dist/index.js',
       format: 'umd',
-      name: 'ecs-utils',
+      name: '@dcl/ecs-scene-utils',
       sourcemap: true,
       amd: {
-        id: 'ecs-utils'
+        id: '@dcl/ecs-scene-utils'
       }
     }
   ]
