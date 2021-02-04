@@ -48,7 +48,7 @@ npm install decentraland-ecs-utils -B
 3) Import the library into the scene's script. Add this line at the start of your `game.ts` file, or any other TypeScript files that require it:
 
 ```ts
-import utils from 'ecs-utils'
+import utils from '@dcl/ecs-scene-utils'
 ```
 
 4. In your TypeScript file, write `utils.` and let the suggestions of your IDE show the available helpers.
@@ -68,7 +68,7 @@ To move an entity over a period of time, from one position to another, use the `
 This example moves an entity from one position to another over 2 seconds:
 
 ```ts
-import utils from 'ecs-utils'
+import utils from '@dcl/ecs-scene-utils'
 
 // Create entity
 const box = new Entity()
@@ -100,7 +100,7 @@ To move an entity over several points of a path over a period of time, use the `
 This example moves an entity over through four points over 5 seconds:
 
 ```ts
-import utils from 'ecs-utils'
+import utils from '@dcl/ecs-scene-utils'
 
 // Create entity
 const box = new Entity()
@@ -140,7 +140,7 @@ The curved path is composed of multiple straight line segments put together. You
 This example moves an entity over through a curve that's subdivided into 40 segments, over a period of 5 seconds. The curve passes through four key points.
 
 ```ts
-import utils from 'ecs-utils'
+import utils from '@dcl/ecs-scene-utils'
 
 // Create entity
 const box = new Entity()
@@ -181,7 +181,7 @@ To rotate an entity over a period of time, from one direction to another, use th
 This example rotates an entity from one rotation to another over 2 seconds:
 
 ```ts
-import utils from 'ecs-utils'
+import utils from '@dcl/ecs-scene-utils'
 
 // Create entity
 const box = new Entity()
@@ -216,7 +216,7 @@ The component also contains the following method:
 In the following example, a cube rotates continuously until clicked:
 
 ```ts
-import utils from 'ecs-utils'
+import utils from '@dcl/ecs-scene-utils'
 
 // Create entity
 const box = new Entity()
@@ -252,7 +252,7 @@ To adjust the scale of an entity over a period of time, from one size to another
 This example scales an entity from one size to another over 2 seconds:
 
 ```ts
-import utils from 'ecs-utils'
+import utils from '@dcl/ecs-scene-utils'
 
 // Create entity
 const box = new Entity()
@@ -354,7 +354,7 @@ It exposes three methods:
 The following example switches the color of a box between two colors each time it's clicked.
 
 ```ts
-import utils from 'ecs-utils'
+import utils from '@dcl/ecs-scene-utils'
 
 // Create entity
 const box = new Entity()
@@ -398,7 +398,7 @@ engine.addEntity(box)
 This example combines a toggle component with a move component to switch an entity between two positions every time it's clicked.
 
 ```ts
-import utils from 'ecs-utils'
+import utils from '@dcl/ecs-scene-utils'
 
 // Create entity
 const box = new Entity()
@@ -448,7 +448,7 @@ Add a `Delay` component to an entity to execute a function only after an `n` amo
 This example creates an entity that only becomes visible in the scene after 100000 milliseconds (100 seconds) have passed.
 
 ```ts
-import utils from 'ecs-utils'
+import utils from '@dcl/ecs-scene-utils'
 
 // create entity
 const easterEgg = new Entity()
@@ -478,7 +478,7 @@ Add an `ExpireIn` component to an entity to remove it from the scene after an `n
 This example creates an entity that is removed from the scene 500 milliseconds after it's clicked.
 
 ```ts
-import utils from 'ecs-utils'
+import utils from '@dcl/ecs-scene-utils'
 
 // create entity
 const box = new Entity()
@@ -504,7 +504,7 @@ Add an `Interval` component to an entity to make it execute a same function ever
 This example creates an entity that changes its scale to a random size every 500 milliseconds.
 
 ```ts
-import utils from 'ecs-utils'
+import utils from '@dcl/ecs-scene-utils'
 
 // create entity
 const box = new Entity()
@@ -549,7 +549,7 @@ The `TriggerData` type may contain the following parameters:
 The following example creates a trigger that changes its position randomly when triggered by the player.
 
 ```ts
-import utils from 'ecs-utils'
+import utils from '@dcl/ecs-scene-utils'
 
 //create entity
 const box = new Entity()
@@ -629,7 +629,7 @@ Food is triggered (or eaten) by both cats or mice. Also, mice are eaten by cats,
 Cats and mice always move towards the food. When food or mice are eaten, they respawn in a random location.
 
 ```ts
-import utils from 'ecs-utils'
+import utils from '@dcl/ecs-scene-utils'
 
 //define layers
 const foodLayer = 1
@@ -983,7 +983,7 @@ The action sequence system takes care of running the sequence of actions. The `A
 The following example creates a box that changes its scale until clicked. Then it resets its scale and moves.
 
 ```ts
-import utils from 'ecs-utils'
+import utils from '@dcl/ecs-scene-utils'
 
 //set clicked flag
 let boxClicked = false
