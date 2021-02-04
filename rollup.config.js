@@ -30,10 +30,11 @@ export default {
   input: './src/index.ts',
   context: 'globalThis',
   plugins,
+  external: /@decentraland\//,
   output: [
     {
       file: './dist/index.js',
-      format: 'umd',
+      format: 'amd',
       name: '@dcl/ecs-scene-utils',
       sourcemap: true,
       amd: {
