@@ -1,7 +1,4 @@
 import { ITimerComponent } from '../component/itimercomponent'
-import { Interval } from '../component/interval'
-import { Delay } from '../component/delay'
-import { ExpireIn } from '../component/expire'
 
 export class TimerSystem implements ISystem {
   private static _instance: TimerSystem | null = null
@@ -22,11 +19,17 @@ export class TimerSystem implements ISystem {
     this.createAndAddToEngine()._components.push(component)
   }
 
+  public addComponentType(component: ComponentConstructor<ITimerComponent>) {
+    for (let comp of this._components) {
+      if (component == comp) {
+        return
+      }
+    }
+    this._components.push(component)
+  }
+
   private constructor() {
     TimerSystem._instance = this
-    this._components.push(Interval)
-    this._components.push(Delay)
-    this._components.push(ExpireIn)
   }
 
   update(dt: number) {

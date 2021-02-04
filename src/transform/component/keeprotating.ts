@@ -23,7 +23,8 @@ export class KeepRotatingComponent implements ITransformComponent {
     this.rotation = Quaternion.Identity
     this.finished = false
 
-    TransformSystem.createAndAddToEngine()
+    let instance = TransformSystem.createAndAddToEngine()
+    instance.addComponentType(KeepRotatingComponent)
   }
 
   update(dt: number): void {

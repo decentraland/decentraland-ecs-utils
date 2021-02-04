@@ -17,7 +17,8 @@ export class Delay implements ITimerComponent {
    * @param {() => void} onTimeReachedCallback callback for when time is reached
    */
   constructor(millisecs: number, onTimeReachedCallback?: () => void) {
-    TimerSystem.createAndAddToEngine()
+    let instance = TimerSystem.createAndAddToEngine()
+    instance.addComponentType(Delay)
 
     this.elapsedTime = 0
     this.targetTime = millisecs / 1000

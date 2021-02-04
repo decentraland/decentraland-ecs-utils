@@ -1,33 +1,9 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "strict": true,
-    "declarationDir": "lib",
-    "outDir": "lib",
-    "strictNullChecks": true,
-    "inlineSourceMap": true,
-    "inlineSources": true,
-    "declaration": true,
-    "allowJs": false,
-    "stripInternal": true,
-    "moduleResolution": "node",
-    "pretty": true,
-    "forceConsistentCasingInFileNames": true,
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": false,
-    "downlevelIteration": true,
-    "keyofStringsOnly": true,
-    "noUnusedLocals": true,
-    "baseUrl": ".",
-    "plugins": [
-      {
-        "name": "tslint-language-service"
-      }
-    ]
-  },
-  "include": ["./src"],
-  "exclude": ["../../node_modules", "../../src", "../../test", "../test", "dist", "lib", "etc", "temp"],
-  "extends": "./node_modules/decentraland-ecs/types/tsconfig.json"
-}
+	"include": ["src"],
+	"compilerOptions": {
+	  "module": "ESNext",
+	  "sourceMap": true,
+	  "declaration": true
+	},
+	"extends": "./node_modules/decentraland-ecs/types/tsconfig.json"
+  }

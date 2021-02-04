@@ -46,7 +46,8 @@ export class RotateTransformComponent implements ITransformComponent {
       this.lerpTime = 1
     }
 
-    TransformSystem.createAndAddToEngine()
+    let instance = TransformSystem.createAndAddToEngine()
+    instance.addComponentType(RotateTransformComponent)
   }
 
   update(dt: number) {

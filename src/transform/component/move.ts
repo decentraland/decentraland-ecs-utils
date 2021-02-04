@@ -46,7 +46,8 @@ export class MoveTransformComponent implements ITransformComponent {
       this.lerpTime = 1
     }
 
-    TransformSystem.createAndAddToEngine()
+    let instance = TransformSystem.createAndAddToEngine()
+    instance.addComponentType(MoveTransformComponent)
   }
 
   update(dt: number) {

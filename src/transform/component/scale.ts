@@ -46,7 +46,8 @@ export class ScaleTransformComponent implements ITransformComponent {
       this.lerpTime = 1
     }
 
-    TransformSystem.createAndAddToEngine()
+    let instance = TransformSystem.createAndAddToEngine()
+    instance.addComponentType(ScaleTransformComponent)
   }
 
   update(dt: number) {

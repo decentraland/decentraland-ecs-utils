@@ -578,7 +578,7 @@ export class TriggerComponent {
 /**
  * Define a box-shaped area for using on a TriggerComponent
  * @param {Vector3} [size=2] The scale of the box area. By default 2x2x2
- * @param {Vector3} position The offset from the position of the entity that owns the TriggerComponent
+ * @param {Vector3} [position=Vector3.Zero()] The offset from the position of the entity that owns the TriggerComponent
  */
 export class TriggerBoxShape {
   size: Vector3
@@ -593,7 +593,7 @@ export class TriggerBoxShape {
 /**
  * Define a sphere-shaped area for using on a TriggerComponent
  * @param {number} [radius=2] The radius of the sphere area. By default 2
- * @param {Vector3} position The offset from the position of the entity that owns the TriggerComponent
+ * @param {Vector3} [position=Vector3.Zero()] The offset from the position of the entity that owns the TriggerComponent
  */
 export class TriggerSphereShape {
   radius: number
