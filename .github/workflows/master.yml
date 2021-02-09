@@ -1,0 +1,33 @@
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  release:
+    types:
+      - created
+
+name: Publish NPM package
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: install
+        run: npm install
+      - name: build
+        run: npm run build
+      #- name: print diff if failed
+      #  if: ${{ failure() }}
+      #  run: cp dist/temp/decentraland-ecs-utils.api.md report/decentraland-ecs-utils.api.md && git diff
+      - name: Publish
+        uses: menduz/oddish-action@master
+        with:
+          #cwd: ./dist
+          access: public # 'public' to deploy @scoped/packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
