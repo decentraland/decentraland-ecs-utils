@@ -27,7 +27,7 @@ jobs:
       - name: Publish
         uses: menduz/oddish-action@master
         with:
-          cwd: ./dist
+          #cwd: ./dist
           access: public # 'public' to deploy @scoped/packages
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
