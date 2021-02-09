@@ -1,0 +1,33 @@
+on:
+  push:
+    branches:
+      - master
+  release:
+    types:
+      - created
+
+name: Publish NPM package
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: install
+        run: npm install
+      - name: build & test & publish
+        run: npm run build
+      - name: print diff if failed
+        if: ${{ failure() }}
+        run: cp dist/temp/decentraland-ecs-utils.api.md report/decentraland-ecs-utils.api.md && git diff
+      - name: Semantic release
+        run: npm run semantic-release
+      - name: Publish
+        uses: menduz/oddish-action@master
+        with:
+          cwd: ./dist
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
