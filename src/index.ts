@@ -31,7 +31,7 @@ import {
 
 import { ActionsSequenceSystem } from './actionsSequenceSystem/actionsSequenceSystem'
 
-export default {
+export {
   TransformSystem,
   MoveTransformComponent,
   RotateTransformComponent,
