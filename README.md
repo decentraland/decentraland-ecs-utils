@@ -40,7 +40,7 @@ To use any of the helpers provided by the utils library
 1. Install it as an `npm` package. Run this command in your scene's project folder:
 
 ```
-npm install decentraland-ecs-utils -B
+npm install @dcl/ecs-scene-utils -B
 ```
 
 2. Run `dcl start` or `dcl build` so the dependencies are correctly installed.
