@@ -17,6 +17,7 @@ This library includes a number of helpful pre-built tools that include component
   - [Delay removing an entity](#delay-removing-an-entity)
   - [Repeat at an Interval](#repeat-at-an-interval)
 - [Triggers](#triggers)
+  - [Trigger Component](#trigger-component)
   - [Trigger layers](#trigger-layers)
 - [Conversions](#conversions)
   - [clamp](#clamp)
@@ -528,6 +529,8 @@ engine.addEntity(box)
 To repeat the execution of a task that isn't directly tied to any entity in the scene, create a dummy entity that only holds an `Interval` component.
 
 ## Triggers
+
+### Trigger Component
 
 The trigger component can execute whatever you want whenever the player's position or the position of a specific entity or type of entity overlaps with an area.
 
