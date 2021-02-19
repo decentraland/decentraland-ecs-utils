@@ -572,15 +572,15 @@ box.addComponent(
   new utils.TriggerComponent(
     triggerBox, //shape
     onCameraEnter : {
-		() => {
-			log('triggered!')
-			box.getComponent(Transform).position = new Vector3(
-				1 + Math.random() * 14,
-				0,
-				1 + Math.random() * 14
-			)
-		}
-	}
+      () => {
+	log('triggered!')
+	box.getComponent(Transform).position = new Vector3(
+		1 + Math.random() * 14,
+		0,
+		1 + Math.random() * 14
+	        )
+      }
+    }
   )
 )
 
@@ -652,32 +652,32 @@ food.addComponent(
   })
 )
 food.addComponent(new utils.TriggerComponent(
-	triggerBox,
-	{
-		layer: foodLayer
-		triggeredByLayer: mouseLayer | catLayer
-		onTriggerEnter: () => {
-			food.getComponent(Transform).position = new Vector3(
-				1 + Math.random() * 14,
-				0,
-				1 + Math.random() * 14
-			)
-			mouse.addComponentOrReplace(
-				new utils.MoveTransformComponent(
-				mouse.getComponent(Transform).position,
-				food.getComponent(Transform).position,
-				4
-				)
-			)
-			cat.addComponentOrReplace(
-				new utils.MoveTransformComponent(
-				cat.getComponent(Transform).position,
-				food.getComponent(Transform).position,
-				4
-				)
-			)
-		}
-	})
+  triggerBox,
+    {
+	layer: foodLayer
+	triggeredByLayer: mouseLayer | catLayer
+	onTriggerEnter: () => {
+	  food.getComponent(Transform).position = new Vector3(
+	    1 + Math.random() * 14,
+	    0,
+	    1 + Math.random() * 14
+	  )
+	  mouse.addComponentOrReplace(
+	    new utils.MoveTransformComponent(
+		mouse.getComponent(Transform).position,
+		food.getComponent(Transform).position,
+		4
+	    )
+	  )
+	  cat.addComponentOrReplace(
+	    new utils.MoveTransformComponent(
+		cat.getComponent(Transform).position,
+		food.getComponent(Transform).position,
+		4
+	    )
+	 )
+    }
+  })
 )
 
 //create mouse
@@ -691,25 +691,25 @@ mouse.addComponent(
   })
 )
 mouse.addComponent(new utils.TriggerComponent(
-	triggerBox,
-	{
-		layer: mouseLayer
-		triggeredByLayer: catLayer
-		onTriggerEnter: () => {
-		mouse.getComponent(Transform).position = new Vector3(
-		1 + Math.random() * 14,
-		0,
-		1 + Math.random() * 14
-		)
-		mouse.addComponentOrReplace(
-			new utils.MoveTransformComponent(
-			mouse.getComponent(Transform).position,
-			food.getComponent(Transform).position,
-			4
-			)
-		)
-		}
-	})
+  triggerBox,
+    {
+	layer: mouseLayer
+	triggeredByLayer: catLayer
+	onTriggerEnter: () => {
+	  mouse.getComponent(Transform).position = new Vector3(
+	    1 + Math.random() * 14,
+	    0,
+	    1 + Math.random() * 14
+	  )
+	  mouse.addComponentOrReplace(
+	    new utils.MoveTransformComponent(
+	      mouse.getComponent(Transform).position,
+	      food.getComponent(Transform).position,
+	      4
+	    )
+      )
+    }
+  })
 )
 
 //create cat
