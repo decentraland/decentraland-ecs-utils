@@ -1,5 +1,8 @@
 import { ITransformComponent } from '../component/itransformcomponent'
 
+/**
+ * @public
+ */
 export class TransformSystem implements ISystem {
   public static _instance: TransformSystem | null = null
 

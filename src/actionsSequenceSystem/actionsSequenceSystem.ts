@@ -1,3 +1,6 @@
+/**
+ * @public
+ */
 export class ActionsSequenceSystem implements ISystem {
   private beginSequenceNode: SequenceNode | null = null
   private currentSequenceNode: SequenceNode | null = null
@@ -79,6 +82,9 @@ export class ActionsSequenceSystem implements ISystem {
   }
 }
 
+/**
+ * @public
+ */
 export namespace ActionsSequenceSystem {
   export interface IAction {
     onStart(): void
@@ -189,7 +195,10 @@ export namespace ActionsSequenceSystem {
   }
 }
 
-class SequenceNode {
+/**
+ * @public
+ */
+export class SequenceNode {
   action: ActionsSequenceSystem.IAction | null = null
   next: SequenceNode | null = null
 

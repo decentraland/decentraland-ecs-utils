@@ -1,3 +1,6 @@
+/**
+ * @public
+ */
 export enum ToggleState {
   Off = 0,
   On
@@ -5,6 +8,7 @@ export enum ToggleState {
 
 /**
  * Toggle component for entities with two states (ON or OFF)
+ * @public
  */
 @Component('toggle')
 export class ToggleComponent {
@@ -15,8 +19,8 @@ export class ToggleComponent {
 
   /**
    * Create an instance of a ToggleComponent
-   * @param {ToggleState} startingState starting state of the toggle (ON or OFF)
-   * @param {(value: ToggleState) => void} onValueChangedCallback called when toggle state changed
+   * @param startingState - starting state of the toggle (ON or OFF)
+   * @param onValueChangedCallback - called when toggle state changed
    */
   constructor(
     startingState: ToggleState = ToggleState.On,
@@ -28,7 +32,7 @@ export class ToggleComponent {
 
   /**
    * Set trigger to a state
-   * @param {ToggleState} state new state
+   * @param state - new state
    */
   public set(state: ToggleState): void {
     this.state = state
@@ -46,7 +50,7 @@ export class ToggleComponent {
 
   /**
    * Get if the current toggle state is ON
-   * @return {boolean}
+   * @returns
    */
   public isOn(): boolean {
     return this.state == ToggleState.On
@@ -54,7 +58,7 @@ export class ToggleComponent {
 
   /**
    * Set callback for when ToggleComponent state changed
-   * @param {(value: ToggleState) => void} onValueChangedCallback callback
+   * @param onValueChangedCallback - callback
    */
   public setCallback(
     onValueChangedCallback: (value: ToggleState) => void

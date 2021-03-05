@@ -1,3 +1,6 @@
+/**
+ * @public
+ */
 export interface ITimerComponent {
   elapsedTime: number
   targetTime: number

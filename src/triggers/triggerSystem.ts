@@ -1,26 +1,43 @@
 import { isPreviewMode } from '@decentraland/EnvironmentAPI'
 
 /**
- *
- * @typedef {Object} TriggerData - Object with data for a NPCTriggerComponent
- * @property {number} layer  layer of the Trigger, useful to discriminate between trigger events. You can set multiple layers by using a | symbol.
- * @property {number} triggeredByLayer against which layers to check collisions
- * @property {(entity: Entity) => void } onTriggerEnter callback when an entity of a valid layer enters the trigger area
- * @property {(entity: Entity) => void} onTriggerExit callback when an entity of a valid layer leaves the trigger area
- * @property {() => void} onCameraEnter callback when the player enters the trigger area
- * @property {() => void} onCameraExit callback when the player leaves the trigger area
- * @property {boolean} enableDebug when true makes the trigger area visible for debug purposes.
+ * Object with data for a NPCTriggerComponent
+ * @public
  */
 export type TriggerData = {
+  /**
+   * layer of the Trigger, useful to discriminate between trigger events. You can set multiple layers by using a | symbol.
+   */
   layer?: number
+  /**
+   * against which layers to check collisions
+   */
   triggeredByLayer?: number
+  /**
+   * callback when an entity of a valid layer enters the trigger area
+   */
   onTriggerEnter?: (entity: Entity) => void
+  /**
+   * callback when an entity of a valid layer leaves the trigger area
+   */
   onTriggerExit?: (entity: Entity) => void
+  /**
+   * callback when the player enters the trigger area
+   */
   onCameraEnter?: () => void
+  /**
+   * callback when the player leaves the trigger area
+   */
   onCameraExit?: () => void
+  /**
+   * when true makes the trigger area visible for debug purposes.
+   */
   enableDebug?: boolean
 }
 
+/**
+ * @public
+ */
 export class TriggerSystem implements ISystem {
   private static _instance: TriggerSystem | null = null
   static get instance(): TriggerSystem {
@@ -50,7 +67,7 @@ export class TriggerSystem implements ISystem {
 
   /**
    * set a custom trigger's shape for the camera
-   * @param {TriggerBoxShape | TriggerSphereShape} shape custom trigger's shape
+   * @param shape - custom trigger's shape
    */
   setCameraTriggerShape(shape: TriggerBoxShape | TriggerSphereShape) {
     this._cameraTriggerWrapper.setShape(shape)
@@ -512,6 +529,9 @@ class CameraTrigger extends TriggerWrapper {
   }
 }
 
+/**
+ * @public
+ */
 @Component('triggerComponent')
 export class TriggerComponent {
   /**
@@ -556,9 +576,8 @@ export class TriggerComponent {
   private _debugEnabled: boolean = false
 
   /**
-   *
-   * @param {TriggerBoxShape | TriggerSphereShape} shape shape of the triggering collider area
-   * @param {TriggerData} data An object with additional parameters for the trigger component
+   * @param shape - shape of the triggering collider area
+   * @param data - An object with additional parameters for the trigger component
    */
   constructor(shape: TriggerBoxShape | TriggerSphereShape, data?: TriggerData) {
     TriggerSystem.createAndAddToEngine()
@@ -577,30 +596,26 @@ export class TriggerComponent {
 
 /**
  * Define a box-shaped area for using on a TriggerComponent
- * @param {Vector3} [size=2] The scale of the box area. By default 2x2x2
- * @param {Vector3} [position=Vector3.Zero()] The offset from the position of the entity that owns the TriggerComponent
+ * @param size - The scale of the box area. By default 2x2x2
+ * @param position - The offset from the position of the entity that owns the TriggerComponent
+ * @public
  */
 export class TriggerBoxShape {
-  size: Vector3
-  position: Vector3
-
-  constructor(size?: Vector3, position?: Vector3) {
-    this.size = size ? size : Vector3.One().scale(2)
-    this.position = position ? position : Vector3.Zero()
-  }
+  constructor(
+    public size: Vector3 = Vector3.One().scale(2),
+    public position: Vector3 = Vector3.Zero()
+  ) {}
 }
 
 /**
  * Define a sphere-shaped area for using on a TriggerComponent
- * @param {number} [radius=2] The radius of the sphere area. By default 2
- * @param {Vector3} [position=Vector3.Zero()] The offset from the position of the entity that owns the TriggerComponent
+ * @param radius - The radius of the sphere area. By default 2
+ * @param position - The offset from the position of the entity that owns the TriggerComponent
+ * @public
  */
 export class TriggerSphereShape {
-  radius: number
-  position: Vector3
-
-  constructor(radius?: number, position?: Vector3) {
-    this.radius = radius ? radius : 2
-    this.position = position ? position : Vector3.Zero()
-  }
+  constructor(
+    public radius: number = 2,
+    public position: Vector3 = Vector3.Zero()
+  ) {}
 }

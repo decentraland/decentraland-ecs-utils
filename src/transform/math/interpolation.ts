@@ -1,3 +1,6 @@
+/**
+ * @public
+ */
 export enum InterpolationType {
   LINEAR,
   EASEINQUAD,
@@ -5,6 +8,9 @@ export enum InterpolationType {
   EASEQUAD
 }
 
+/**
+ * @public
+ */
 export function Interpolate(type: InterpolationType, t: number): number {
   switch (type) {
     case InterpolationType.LINEAR:
