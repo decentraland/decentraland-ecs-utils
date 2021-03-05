@@ -3,3 +3,4 @@ bin
 lib
 dist
 .DS_Store
+tsdoc-metadata.json

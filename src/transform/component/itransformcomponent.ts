@@ -1,3 +1,6 @@
+/**
+ * @public
+ */
 export interface ITransformComponent {
   onFinishCallback?: () => void
   update(dt: number): void

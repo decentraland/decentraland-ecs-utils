@@ -4,6 +4,7 @@ import { InterpolationType, Interpolate } from '../math/interpolation'
 
 /**
  * Component to rotate entity from one rotation (start) to another (end) in an amount of time
+ * @public
  */
 @Component('rotateTransformComponent')
 export class RotateTransformComponent implements ITransformComponent {
@@ -18,11 +19,11 @@ export class RotateTransformComponent implements ITransformComponent {
 
   /**
    * Create a RotateTransformComponent instance to add as a component to a Entity
-   * @param {ReadOnlyQuaternion} start starting rotation
-   * @param {ReadOnlyQuaternion} end ending rotation
-   * @param {number} duration duration (in seconds) of start to end rotation
-   * @param {() => void} onFinishCallback called when rotation ends
-   * @param {InterpolationType} interpolationType type of interpolation to be used (default: LINEAR)
+   * @param start - starting rotation
+   * @param end - ending rotation
+   * @param duration - duration (in seconds) of start to end rotation
+   * @param onFinishCallback - called when rotation ends
+   * @param interpolationType - type of interpolation to be used (default: LINEAR)
    */
   constructor(
     start: ReadOnlyQuaternion,

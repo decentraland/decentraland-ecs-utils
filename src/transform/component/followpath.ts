@@ -3,6 +3,7 @@ import { TransformSystem } from '../system/transfromSystem'
 
 /**
  * Component to move an entity down a fixed path in a given amount of time
+ * @public
  */
 @Component('followPathComponent')
 export class FollowPathComponent implements ITransformComponent {
@@ -16,10 +17,10 @@ export class FollowPathComponent implements ITransformComponent {
 
   /**
    * Create a FollowPathComponent instance to add as a component to a Entity
-   * @param {Vector3[]} points array of points for the path
-   * @param {number} duration duration of the movement through the path
-   * @param {() => void} onFinishCallback called when movement ends
-   * @param {(currentPoint: Vector3, nextPoint: Vector3) => void} onPointReachedCallback called everytime an entity reaches a point of the path
+   * @param points - array of points for the path
+   * @param duration - duration of the movement through the path
+   * @param onFinishCallback - called when movement ends
+   * @param onPointReachedCallback - called everytime an entity reaches a point of the path
    */
   constructor(
     points: Vector3[],
@@ -97,6 +98,7 @@ export class FollowPathComponent implements ITransformComponent {
 
 /**
  * Component to move a entity down a fixed path in an amount of time
+ * @public
  */
 @Component('followCurvedPathComponent')
 export class FollowCurvedPathComponent implements ITransformComponent {
@@ -111,12 +113,12 @@ export class FollowCurvedPathComponent implements ITransformComponent {
 
   /**
    * Create a FollowCurvedPathComponent instance to add as a component to a Entity
-   * @param {Vector3[]} points array of points that the curve must pass through
-   * @param {number} duration duration of the movement through the path
-   * @param {number} numberOfSegments how many straight line segments to use to construct the curve
-   * @param {boolean} turnToFaceNext if true, rotates for each segment to always look forward
-   * @param {boolean} closedCircle if true, traces a circle that starts back at the beginning, keeping the curvature rounded in the seams too
-   * @param {() => void} onFinishCallback called when movement ends
+   * @param points - array of points that the curve must pass through
+   * @param duration - duration of the movement through the path
+   * @param numberOfSegments - how many straight line segments to use to construct the curve
+   * @param turnToFaceNext - if true, rotates for each segment to always look forward
+   * @param closedCircle - if true, traces a circle that starts back at the beginning, keeping the curvature rounded in the seams too
+   * @param onFinishCallback - called when movement ends
    */
   constructor(
     points: Vector3[],

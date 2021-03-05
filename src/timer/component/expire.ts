@@ -3,6 +3,7 @@ import { TimerSystem } from '../system/timerSystem'
 
 /**
  * Remove entity after X milliseconds
+ * @public
  */
 @Component('timerExpireIn')
 export class ExpireIn implements ITimerComponent {
@@ -13,8 +14,8 @@ export class ExpireIn implements ITimerComponent {
   private onTimeReachedCallback?: () => void
 
   /**
-   * @param {number} millisecs amount of time in milliseconds
-   * @param {() => void} onTimeReachedCallback callback for when time is reached
+   * @param millisecs - amount of time in milliseconds
+   * @param onTimeReachedCallback - callback for when time is reached
    */
   constructor(millisecs: number, onTimeReachedCallback?: () => void) {
     let instance = TimerSystem.createAndAddToEngine()
