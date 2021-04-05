@@ -1076,3 +1076,11 @@ const sequence = new utils.ActionsSequenceSystem.SequenceBuilder()
 //Create a sequence system, and add it to the engine to run the sequence
 engine.addSystem(new utils.ActionsSequenceSystem(sequence))
 ```
+
+
+## Contribute
+
+In order to test changes made to this repository in active scenes, do the following:
+
+1. Run `npm run link` on this repository
+2. On the scene directory, after you installed the dependency, run `npm link @dcl/ui-scene-utils`

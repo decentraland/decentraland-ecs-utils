@@ -8,7 +8,8 @@
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
     "make": "cp -r src dist && cp package.json dist/package.json && cp LICENSE dist/LICENSE && cp README.md dist/README.md",
-    "makeclean": "rm -rf dist && npm run make"
+    "makeclean": "rm -rf dist && npm run make",
+	"link": "npm link && rollup --watch -c --environment BUILD:production"
   },
   "repository": {
     "type": "git",
