@@ -1083,4 +1083,4 @@ engine.addSystem(new utils.ActionsSequenceSystem(sequence))
 In order to test changes made to this repository in active scenes, do the following:
 
 1. Run `npm run link` on this repository
-2. On the scene directory, after you installed the dependency, run `npm link @dcl/ui-scene-utils`
+2. On the scene directory, after you installed the dependency, run `npm link @dcl/ecs-scene-utils`
