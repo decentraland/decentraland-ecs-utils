@@ -30,6 +30,9 @@ export {
   TriggerData
 } from './triggers/triggerSystem'
 
+export {setTimeout} from './helpers/timeOut'
+export {addOneTimeTrigger} from './helpers/oneTimeTrigger'
+
 export { ITimerComponent } from './timer/component/itimercomponent'
 export { ITransformComponent } from './transform/component/itransformcomponent'
 
@@ -37,3 +40,4 @@ export {
   ActionsSequenceSystem,
   SequenceNode
 } from './actionsSequenceSystem/actionsSequenceSystem'
+

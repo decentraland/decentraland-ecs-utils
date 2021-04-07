@@ -18,6 +18,7 @@ This library includes a number of helpful pre-built tools that include component
   - [Repeat at an Interval](#repeat-at-an-interval)
 - [Triggers](#triggers)
   - [Trigger Component](#trigger-component)
+  - [One Time Trigger](#one-time-trigger)
   - [Trigger layers](#trigger-layers)
 - [Conversions](#conversions)
   - [clamp](#clamp)
@@ -444,9 +445,27 @@ These tools are all related to the passage of time in the scene.
 
 ### Delay a function
 
-Add a `Delay` component to an entity to execute a function only after an `n` amount of milliseconds.
+Use the `setTimeout` function to delay the execution of a function by a given amount of milliseconds.
 
-This example creates an entity that only becomes visible in the scene after 100000 milliseconds (100 seconds) have passed.
+This function requires two fields:
+
+- `ms`: How many milliseconds to delay the function
+- `callback`: The function to execute after the waiting period
+
+This example delays the logging of a message by 1000 milliseconds.
+
+
+```ts
+import * as utils from '@dcl/ecs-scene-utils'
+
+utils.setTimeout(1000, ()=>{
+	log("Hello World")
+})
+```
+
+As an alternative, you can add the `Delay` component to an entity.
+
+This example creates an entity that only becomes visible in the scene after 10000 milliseconds (10 seconds) have passed.
 
 ```ts
 import * as utils from '@dcl/ecs-scene-utils'
@@ -461,7 +480,7 @@ easterEgg.addComponent(easterEggShape)
 
 // add a delayed function
 easterEgg.addComponent(
-  new utils.Delay(100000, () => {
+  new utils.Delay(10000, () => {
     easterEgg.getComponent(BoxShape).visible = true
   })
 )
@@ -470,7 +489,6 @@ easterEgg.addComponent(
 engine.addEntity(easterEgg)
 ```
 
-To delay the execution of a task that isn't directly tied to any entity in the scene, create a dummy entity that only holds a `Delay` component.
 
 ### Delay removing an entity
 
@@ -571,16 +589,18 @@ let triggerBox = new utils.TriggerBoxShape()
 box.addComponent(
   new utils.TriggerComponent(
     triggerBox, //shape
-    onCameraEnter : {
-      () => {
-	log('triggered!')
-	box.getComponent(Transform).position = new Vector3(
-		1 + Math.random() * 14,
-		0,
-		1 + Math.random() * 14
-	        )
-      }
-    }
+	{
+		onCameraEnter :() => {
+			log('triggered!')
+			box.getComponent(Transform).position = new Vector3(
+				1 + Math.random() * 14,
+				0,
+				1 + Math.random() * 14
+					)
+		}
+	
+	}
+    
   )
 )
 
@@ -601,6 +621,44 @@ You can check where exactly the trigger area is and its scale by setting the `en
 ```TypeScript
 box.getComponent(utils.TriggerComponent).enabled = false
 ```
+
+### One Time Trigger
+
+As a shortcut for creating a trigger area that is only actioned when the player first walks in or out, use the `addOneTimeTrigger()` function.
+
+This function creates a new entity with a `TriggerComponent`, that gets removed as soon as the `onCameraEnter` and `onCameraExit` functions are triggered once. If only one of these is present, the entity is removed as soon it is triggered.
+
+This function is especially useful for optimizing the loading of a scene, so that certain elements aren't loaded till a player walks into an area.
+
+This function takes similar arguments to creating a Trigger component:
+
+- `shape`: Shape of the triggering collider area, either a cube or a sphere (`TriggerBoxShape` or `TriggerSphereShape`)
+- `data`: An object of type `TriggerData` containing several optional parameters to configure the behavior of the trigger area.
+- `parent`: An entity to set as parent of the entity created by this function. The new entity inherits position, rotation and scale from the parent.
+
+The `TriggerData` type may contain the following parameters:
+
+- `onCameraEnter`: Callback function for when the player first enters the trigger area
+- `onCameraExit`: Callback function for when the player first leaves the trigger area
+- `enableDebug`: When true, makes the trigger area visible for debug purposes. Only visible when running a preview locally, not in production.
+
+```ts
+import * as utils from '@dcl/ecs-scene-utils'
+
+let triggerBox = new utils.TriggerBoxShape(new Vector3(3,3,3), new Vector3(8, 1, 8))
+
+utils.addOneTimeTrigger(triggerBox, {
+	onCameraEnter : () => {
+		log('Welcome!')
+	},
+	onCameraExit: ()=>{
+		log('Have a nice day!')
+	}
+})
+```
+
+In the example above, the trigger area will only display the welcome message the first time the player walks in, and only display the goodbye message the first time the player leaves. After that, the entity is removed from the scene.
+
 
 ### Set a custom shape for player
 

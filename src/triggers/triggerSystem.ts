@@ -576,8 +576,8 @@ export class TriggerComponent {
   private _debugEnabled: boolean = false
 
   /**
-   * @param shape - shape of the triggering collider area
-   * @param data - An object with additional parameters for the trigger component
+   * @param {TriggerBoxShape | TriggerSphereShape} shape - shape of the triggering collider area
+   * @param {TriggerData} data - An object with additional parameters for the trigger component
    */
   constructor(shape: TriggerBoxShape | TriggerSphereShape, data?: TriggerData) {
     TriggerSystem.createAndAddToEngine()
