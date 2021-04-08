@@ -52,7 +52,7 @@ const configuration = {
     },
     tsdocMessageReporting: {
       default: {
-        logLevel: 'warning'
+        logLevel: 'error'
       }
     }
   }

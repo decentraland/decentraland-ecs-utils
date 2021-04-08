@@ -7,7 +7,7 @@ import { Delay } from "../timer/component/delay"
  * @param {number} ms  Time im milliseconds to delay the function
  * @param {() => void} callback Function to execute when the time is up
  */
-export function setTimeout(ms: number, callback: () => void) {
+export function setTimeout(ms: number, callback: () => void): Entity {
 	const entity = new Entity()
 	entity.addComponent(
 	  new Delay(ms, () => {

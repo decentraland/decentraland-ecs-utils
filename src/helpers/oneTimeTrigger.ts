@@ -1,7 +1,6 @@
 import { TriggerBoxShape, TriggerComponent, TriggerData, TriggerSphereShape } from "../triggers/triggerSystem"
 
 
-
 /**
  * Quick function to add a trigger area that is removed after being triggered once.
  *
@@ -13,7 +12,7 @@ import { TriggerBoxShape, TriggerComponent, TriggerData, TriggerSphereShape } fr
 	shape: TriggerBoxShape | TriggerSphereShape, 
 	data?: TriggerData,
 	parent?: Entity
-  ) {
+  ): Entity {
 	let entered = false
 	let exited = false
   
