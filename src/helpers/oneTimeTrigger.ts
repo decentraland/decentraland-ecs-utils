@@ -3,7 +3,8 @@ import { TriggerBoxShape, TriggerComponent, TriggerData, TriggerSphereShape } fr
 
 /**
  * Quick function to add a trigger area that is removed after being triggered once.
- *
+ * @public
+ * 
  * @param shape - shape of the triggering collider area
  * @param data - An object with additional parameters for the trigger component
  * @param parent - Optional entity to set as a parent to the trigger area entity.
