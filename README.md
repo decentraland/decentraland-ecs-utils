@@ -284,6 +284,18 @@ The following values are accepted:
 - `Interpolation.EASEINQUAD`
 - `Interpolation.EASEOUTQUAD`
 - `Interpolation.EASEQUAD`
+- `Interpolation.EASEINSINE`
+- `Interpolation.EASEOUTSINE`
+- `Interpolation.EASESINE`
+- `Interpolation.EASEINEXPO`
+- `Interpolation.EASEOUTEXPO`
+- `Interpolation.EASEEXPO`
+- `Interpolation.EASEINELASTIC`
+- `Interpolation.EASEOUTELASTIC`
+- `Interpolation.EASEELASTIC`
+- `Interpolation.EASEINBOUNCE`
+- `Interpolation.EASEOUTEBOUNCE`
+- `Interpolation.EASEBOUNCE`
 
 The following example moves a box following an ease-in rate:
 
@@ -1138,7 +1150,16 @@ engine.addSystem(new utils.ActionsSequenceSystem(sequence))
 
 ## Contribute
 
-In order to test changes made to this repository in active scenes, do the following:
+All contributions from the community are encouraged as Pull Requests to this repository. Please notify of any PRs in the Decentraland Discord channels to make sure the team is aware of them.
 
-1. Run `npm run link` on this repository
-2. On the scene directory, after you installed the dependency, run `npm link @dcl/ecs-scene-utils`
+In order to test any changes made to this library on active scenes, follow these steps:
+
+1. Run `npm run build` to build internal dependencies in the project folder
+2. Run `npm run link` on this repository
+3. Create a new DCL scene, or pick an existing one
+4. Install the library normally with `npm i @dcl/ecs-scene-utils -B`
+5. Import the library normally into the project with `import * as utils from '@dcl/ecs-scene-utils'` 
+6. On the scene folder, run `npm link @dcl/ecs-scene-utils`
+7. Use this scene to try out any functionality you've added or changed to verify that it behaves as expected.
+
+> Note: When done testing, run `npm unlink @dcl/ecs-scene-utils` on your scene, so that it no longer depends on your local copy of the library.
