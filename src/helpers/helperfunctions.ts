@@ -56,7 +56,7 @@ export function getEntityWorldPosition(entity: IEntity): Vector3 {
     : Vector3.Zero()
   let parentEntity = entity.getParent()
 
-  if (parentEntity != null) {
+  if (parentEntity != null && parentEntity.uuid != '0') {
     if (parentEntity.uuid == 'FirstPersonCameraEntityReference') {
       //log('ATTACHED TO CAMERA')
       let parentRotation = Camera.instance.rotation.clone()
@@ -95,8 +95,10 @@ export function getEntityWorldRotation(entity: IEntity): Quaternion {
   let entityRotation: Quaternion = entity.hasComponent(Transform)
     ? entity.getComponent(Transform).rotation.clone()
     : Quaternion.Zero()
+	// log("GOT A ROTATION VALUE: ", entityRotation.eulerAngles)
   let parentEntity = entity.getParent()
-  if (parentEntity != null) {
+  //   log("PARENT ENTITY: ", parentEntity.uuid)
+  if (parentEntity != null && parentEntity.uuid != '0') {
     if (parentEntity.uuid == 'FirstPersonCameraEntityReference') {
       //log('ATTACHED TO CAMERA')
       let parentRotation = Camera.instance.rotation.clone()
@@ -110,10 +112,8 @@ export function getEntityWorldRotation(entity: IEntity): Quaternion {
       )
       return entityRotation.multiply(parentRotation)
     } else {
-      //   let parentRotation = parentEntity.hasComponent(Transform)
-      //     ? parentEntity.getComponent(Transform).rotation
-      //     : Quaternion.Identity
-      return entityRotation.multiply(getEntityWorldRotation(parentEntity))
+	  let parentRotation = getEntityWorldRotation(parentEntity)
+      return entityRotation.multiply(parentRotation)
     }
   }
   return entityRotation
