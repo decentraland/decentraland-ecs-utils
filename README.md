@@ -626,6 +626,8 @@ Each trigger area has a shape for its area to check for collisions, which is com
 
 You can check where exactly the trigger area is and its scale by setting the `enableDebug` flag to true. You will then see this shape in the scene when running a preview. This debug shape is only visible in the context of a preview, not once the scene is deployed.
 
+> Note: The player's head needs to go into the trigger area to activate it. If only a player's feet or torso are in, that won't trigger it. Setting `enableDebug` to true can help you check how the area overlaps with the player.
+
 ### Dissable a collision component
 
 `TriggerComponent` components have an `enabled` property, which is set to `true` by default when creating it. You can use this property to disable the behavior of the component without removing it.
