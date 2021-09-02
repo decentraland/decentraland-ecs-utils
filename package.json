@@ -29,7 +29,7 @@
   "homepage": "https://github.com/decentraland/decentraland-ecs-utils#readme",
   "devDependencies": {
     "@microsoft/api-extractor": "^7.13.2",
-    "decentraland-ecs": "^6.6.4",
+    "decentraland-ecs": "latest",
     "glob": "^7.1.6",
     "prettier": "^1.19.1",
     "rollup": "^2.35.1",
