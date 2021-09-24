@@ -47,6 +47,6 @@
     "tsdoc-metadata.json"
   ],
   "peerDependencies": {
-    "decentraland-ecs": "^6.6.4"
+    "decentraland-ecs": "6.x.x"
   }
 }
