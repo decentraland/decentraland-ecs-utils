@@ -940,15 +940,16 @@ The `sendRequest()` function also lets you use the following arguments, for send
 
 ```ts
 async function request() {
-  let response = await utils.sendRequest(
-  	'https://jsonplaceholder.typicode.com/posts',
-    'POST',
-    {
-      'content-type': 'application/json',
-    },
-    {
-      content: 'My test JSON',
-    }
+    let response = await utils.sendRequest(
+        'https://jsonplaceholder.typicode.com/posts',
+        'POST',
+        {
+            'content-type': 'application/json',
+        },
+        {
+            content: 'My test JSON',
+        }
+    )
 }
 ```
 
