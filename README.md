@@ -305,7 +305,7 @@ box.addComponent(
     StartPos,
     EndPos,
     2,
-    null,
+    undefined,
     utils.InterpolationType.EASEINQUAD
   )
 )
