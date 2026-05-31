@@ -13,10 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # @v4.3.0
-      - name: Use Node.js 14.x
+      - name: Use Node.js 24
         uses: actions/setup-node@v1
         with:
-          node-version: 14.x
+          node-version: '24'
       - name: install
         run: npm install
       - name: build
