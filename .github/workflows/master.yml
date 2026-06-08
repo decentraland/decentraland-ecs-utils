@@ -10,11 +10,14 @@ on:
 name: Publish NPM package
 jobs:
   install:
+    permissions:
+      contents: read
+      id-token: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # @v4.3.0
+      - uses: actions/checkout@v6
       - name: Use Node.js 24
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v6
         with:
           node-version: '24'
       - name: install
@@ -25,9 +28,7 @@ jobs:
       #  if: ${{ failure() }}
       #  run: cp dist/temp/decentraland-ecs-utils.api.md report/decentraland-ecs-utils.api.md && git diff
       - name: Publish
-        uses: decentraland/oddish-action@914e7c59e93e708152aa703c50196740c0526c1d # @master
+        uses: decentraland/oddish-action@0074f2d535c43b5c83f136525304a6277166d77f # @master
         with:
           #cwd: ./dist
           access: public # 'public' to deploy @scoped/packages
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
