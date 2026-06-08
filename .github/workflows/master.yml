@@ -10,6 +10,9 @@ on:
 name: Publish NPM package
 jobs:
   install:
+    permissions:
+      contents: read
+      id-token: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
