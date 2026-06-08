@@ -25,9 +25,8 @@ jobs:
       #  if: ${{ failure() }}
       #  run: cp dist/temp/decentraland-ecs-utils.api.md report/decentraland-ecs-utils.api.md && git diff
       - name: Publish
-        uses: decentraland/oddish-action@914e7c59e93e708152aa703c50196740c0526c1d # @master
+        uses: decentraland/oddish-action@0074f2d535c43b5c83f136525304a6277166d77f # @master
         with:
           #cwd: ./dist
           access: public # 'public' to deploy @scoped/packages
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
