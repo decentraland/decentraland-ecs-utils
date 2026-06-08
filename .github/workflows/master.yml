@@ -24,8 +24,6 @@ jobs:
       #- name: print diff if failed
       #  if: ${{ failure() }}
       #  run: cp dist/temp/decentraland-ecs-utils.api.md report/decentraland-ecs-utils.api.md && git diff
-      - name: upgrade npm for Trusted Publishing
-        run: corepack install -g npm@11 && npm --version
       - name: Publish
         uses: decentraland/oddish-action@0074f2d535c43b5c83f136525304a6277166d77f # @master
         with:
